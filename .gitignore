@@ -1,0 +1,16 @@
+kriptokuna
+config.json
+debug
+deploy.sh
+kkn.db
+docs/accounts.txt
+docs/*.png
+docs/general.txt
+docs/hackers.txt
+docs/kriptokuna.txt
+docs/manifest.txt
+docs/oracles.txt
+docs/anoneutopia.txt
+docs/procedure.txt
+.vscode/
+.vscode/*

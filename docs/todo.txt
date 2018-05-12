@@ -1,0 +1,36 @@
+TODO
+
+- dizajn kriptokune / anote
+- tutoriali - kako biti anoniman na Internetu
+- tutoriali - kako postati Kriptokuna Bankster
+- facebook page
+- pregledati sve na firefoxu
+- aktivirati ostale domene
+
+DONE
+
+* logo
+* favicon
+* header button
+* forma za prijavu
+* header slika
+* postani volonter banner
+* prijava + model
+* spojiti brojeve
+* kriptokuna
+* meta tagovi
+* facebook tagovi
+* fb image
+* analytics
+* cesta pitanja
+* captcha
+* blokirani
+* volontiraj
+* popraviti na mobitelu
+* deploy skripta
+* webmaster tools
+* sitemap.xml
+* popraviti naslovnicu na mobitelu
+* dodati trailing slash
+* wat
+* github
