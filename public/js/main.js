@@ -122,7 +122,7 @@ var ttlSupply = -1;
 
 })(jQuery);
 
-window.addEventListener('load', initMetaMask);
+// window.addEventListener('load', initMetaMask);
 
 function initMetaMask() {
     // Checking if Web3 has been injected by the browser (Mist/MetaMask)
