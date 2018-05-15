@@ -34,3 +34,4 @@ DONE
 * dodati trailing slash
 * wat
 * github
+* facebook page
