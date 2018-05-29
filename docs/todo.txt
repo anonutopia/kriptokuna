@@ -5,7 +5,6 @@ TODO
 - tutoriali - kako postati Kriptokuna Bankster
 - facebook page
 - pregledati sve na firefoxu
-- aktivirati ostale domene
 
 DONE
 
@@ -35,3 +34,4 @@ DONE
 * wat
 * github
 * facebook page
+* aktivirati ostale domene

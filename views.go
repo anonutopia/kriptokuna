@@ -102,5 +102,5 @@ func view404(ctx *macaron.Context) {
 	ctx.Data["URI"] = "/not-found/"
 	ctx.Data["Title"] = "404 | "
 
-	ctx.HTML(200, "404")
+	ctx.HTML(404, "404")
 }
