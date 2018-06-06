@@ -1,0 +1,120 @@
+
+<!doctype html>
+<html>
+
+<head>
+	<title>Line Chart</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+	<script src="utils.js"></script>
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+    <div style="width:100%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		var config = {
+			type: 'line',
+			data: {
+				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+				datasets: []
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'ANT SIMULATION'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Supply'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Price (ETH)'
+						}
+					}]
+				}
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+
+            var price = 0.00000000001;
+            var step = 0.01;
+            var supply = 100000000;
+            var balance = 0;
+            var tier = 1000;
+            var drainFactorLimit = 0.99;
+            var shown = false;
+
+            var newColor = window.chartColors['red'];
+            var newDataset = {
+                label: 'Price 1',
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            newDataset.data.push(price);
+
+            for (var i = 1; i < supply; i += 1) {
+                balance += price;
+                var drainFactor = balance / (i * price);
+                if (drainFactor >= drainFactorLimit && i % tier == 0) {
+                    price += step;
+                    if (price >= 0.018 && !shown) {
+                        console.log(balance);
+                        shown = true;
+                    }
+                    if (step > 0.000000000001) {
+                        step /= 2;
+                    }
+                }
+                if (drainFactorLimit > 0.1 && i % 1000 == 0 && drainFactor >= drainFactorLimit) {
+                    drainFactorLimit -= 0.001;
+                    drainFactorLimit = Math.round(drainFactorLimit * 1000) / 1000;
+                    if ((drainFactorLimit*1000) % 100 == 0) {
+                        console.log(balance + ' ' + i);
+                    }
+                }
+                if (i % (supply / 10) == 0) {
+                    newDataset.data.push(price);
+                    console.log(drainFactorLimit);
+                }
+            }
+
+            config.data.datasets.push(newDataset);
+            window.myLine.update();
+            console.log(balance);
+		};
+
+	</script>
+</body>
+
+</html>

@@ -1,0 +1,198 @@
+
+<!doctype html>
+<html>
+
+<head>
+	<title>Line Chart</title>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+	<script src="utils.js"></script>
+	<style>
+	canvas{
+		-moz-user-select: none;
+		-webkit-user-select: none;
+		-ms-user-select: none;
+	}
+	</style>
+</head>
+
+<body>
+	<button id="randomizeData">Randomize Data</button>
+	<button id="addDataset">Add Dataset</button>
+	<button id="removeDataset">Remove Dataset</button>
+	<button id="addData">Add Data</button>
+	<button id="removeData">Remove Data</button>
+
+    <div style="width:100%;">
+		<canvas id="canvas"></canvas>
+	</div>
+	<script>
+		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+		var config = {
+			type: 'line',
+			data: {
+				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+				datasets: []
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'ANT SIMULATION'
+				},
+				tooltips: {
+					mode: 'index',
+					intersect: false,
+				},
+				hover: {
+					mode: 'nearest',
+					intersect: true
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Supply'
+						}
+					}],
+					yAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Price (ETH)'
+						}
+					}]
+				}
+			}
+		};
+
+		window.onload = function() {
+			var ctx = document.getElementById('canvas').getContext('2d');
+			window.myLine = new Chart(ctx, config);
+
+            var price = 0;
+            var step = 0.0001;
+            var supply = 1000;
+            var tier = 1;
+            var balance = 0;
+            var factor = 0.01;
+
+            var newColor = window.chartColors['red'];
+            var newDataset = {
+                label: 'Price 1',
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            var newColor = window.chartColors['blue'];
+            var newDataset1 = {
+                label: 'Price 2',
+                backgroundColor: newColor,
+                borderColor: newColor,
+                data: [],
+                fill: false
+            };
+
+            newDataset.data.push(price);
+            newDataset1.data.push(0);
+
+            for (var i = tier; i < supply; i += tier) {
+                // if (factor <= 1) {
+                //     var priceFactor = factor;
+                // } else {
+                //     var priceFactor = 1;
+                // }
+                // var priceFactor = 1;
+                // price2 = (balance * priceFactor) / i;
+                var realStep = step / factor;
+                price += realStep;
+                balance += (tier*price);
+                if (i % (supply / 10) == 0) {
+                    price2 = balance / i;
+                    console.log(price2 / price);
+                    // if ((price2 / price) > 0.95) {
+                    //     price2 = price;
+                    // }
+                    console.log(price.toFixed(18));
+                    console.log(price2.toFixed(18));
+                    console.log(balance)
+                    newDataset.data.push(price.toFixed(18));
+                    newDataset1.data.push(price2.toFixed(18));
+                }
+                if (i % 10) {
+                    factor += 0.1;   
+                }
+            }
+
+            config.data.datasets.push(newDataset);
+            config.data.datasets.push(newDataset1);
+        
+            window.myLine.update();
+
+            console.log(balance);
+		};
+
+		document.getElementById('randomizeData').addEventListener('click', function() {
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data = dataset.data.map(function() {
+					return randomScalingFactor();
+				});
+
+			});
+
+			window.myLine.update();
+		});
+
+		var colorNames = Object.keys(window.chartColors);
+		document.getElementById('addDataset').addEventListener('click', function() {
+			var colorName = colorNames[config.data.datasets.length % colorNames.length];
+			var newColor = window.chartColors[colorName];
+			var newDataset = {
+				label: 'Dataset ' + config.data.datasets.length,
+				backgroundColor: newColor,
+				borderColor: newColor,
+				data: [],
+				fill: false
+			};
+
+			for (var index = 0; index < config.data.labels.length; ++index) {
+				newDataset.data.push(randomScalingFactor());
+			}
+
+			config.data.datasets.push(newDataset);
+			window.myLine.update();
+		});
+
+		document.getElementById('addData').addEventListener('click', function() {
+			if (config.data.datasets.length > 0) {
+				var month = MONTHS[config.data.labels.length % MONTHS.length];
+				config.data.labels.push(month);
+
+				config.data.datasets.forEach(function(dataset) {
+					dataset.data.push(randomScalingFactor());
+				});
+
+				window.myLine.update();
+			}
+		});
+
+		document.getElementById('removeDataset').addEventListener('click', function() {
+			config.data.datasets.splice(0, 1);
+			window.myLine.update();
+		});
+
+		document.getElementById('removeData').addEventListener('click', function() {
+			config.data.labels.splice(-1, 1); // remove the label first
+
+			config.data.datasets.forEach(function(dataset) {
+				dataset.data.pop();
+			});
+
+			window.myLine.update();
+		});
+	</script>
+</body>
+
+</html>
