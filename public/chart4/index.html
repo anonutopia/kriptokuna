@@ -20,7 +20,6 @@
 		<canvas id="canvas"></canvas>
 	</div>
 	<script>
-		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
 			type: 'line',
 			data: {
@@ -64,13 +63,13 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var supply = 1000000;
-            var price = 0.0001;
-            var step = 1;
+            var supply = 100000;
+            var price = 0.0000001;
             var balance = 0;
-            var shown = false;
-            var drainFactor = 0.4
-            var tier = 6400;
+            var tier = 1000;
+            var oldBalance = 0;
+            var priceFactor = 10;
+            var priceStop = false;
 
             var newColor = window.chartColors['red'];
             var newDataset = {
@@ -86,30 +85,33 @@
 
             for (var i = 1; i < supply; i += 1) {
                 balance += price;
-                if ((balance / (i*price)) >= drainFactor && i % tier == 0) {
-                    price += step;
-                    if (step > 0.000001 && i % (tier*10) == 0) {
-                        step /= 4;
-                        if (tier > 100) {
-                            tier /= 2;
-                        }
+
+                if (i % tier == 0) {
+                    price *= priceFactor;
+                    if (priceFactor > 2 && !priceStop) {
+                        priceFactor /= 2;
+                    }
+                    if (!priceStop && price > 10) {
+                        priceStop = true;
+                    }
+                    if (priceStop && priceFactor > 1.0001) {
+                        priceFactor -= 0.01;
+                        priceFactor = Math.round(priceFactor * 100) / 100;
                     }
                 }
+
                 if (i % (supply / 10) == 0) {
                     newDataset.data.push(price);
-                    console.log(parseInt(balance) + " " + balance / (i*price) + " " + step + " " + balance*0.2 + " " + tier + " " + price + " " + i);
-                    if (balance > 10000000 && !shown) {
-                        // balance = 100000;
-                        shown = true;
-                    }
+                    spent = balance - oldBalance;
+                    console.log(i + " " + price + " " + parseInt(balance) + " " + parseInt(spent) + " " + parseInt(spent * 0.2) + " " + priceFactor);
+                    var oldBalance = balance;
                 }
             }
 
+            console.log(i + " " + parseInt(balance) + " " + parseInt(spent) + " " + parseInt(spent * 0.2));
             config.data.datasets.push(newDataset);
             window.myLine.update();
-            console.log(parseInt(balance) + " " + balance / (i*price) + " " + step + " " + balance*0.2 + " " + tier + " " + price + " " + i);
 		};
-
 	</script>
 </body>
 

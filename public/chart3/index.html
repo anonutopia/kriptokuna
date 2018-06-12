@@ -24,7 +24,7 @@
 		var config = {
 			type: 'line',
 			data: {
-				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
 				datasets: []
 			},
 			options: {
@@ -64,15 +64,15 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var supply = 6000000;
+            var supply = 100000000;
             var price = 0;
-            var step = 0.001;
+            var step = 0.00001;
             var balance = 0;
-            var tier = 100;
-            var referralFactor = 0.05;
+            var tier = 10000;
             var crowdfundingFactor = 0.1;
             var spent = 0;
             var oldBalance = 0;
+            var tierFactor = 1.1;
 
             var newColor = window.chartColors['red'];
             var newDataset = {
@@ -99,23 +99,17 @@
 
             for (var i = 1; i < supply; i += 1) {
                 balance += price;
+                price += step;
 
-                if (i % tier == 0) {
-                    price += step;
-                }
-
-                if (i % (tier*5000) == 0 && step > 0.000000001) {
-                    step /= 2;
-                }
-
-                if (i % (tier*100) == 0) {
-                    if (referralFactor > 0.001) {
-                        referralFactor -= 0.001;
-                        referralFactor = Math.round(referralFactor * 1000) / 1000;
+                if (i % tier == 0 && step > 0.000001) {
+                    step /= tierFactor;
+                    if (tierFactor < 2) {
+                        tierFactor += 0.1;
+                        tierFactor = Math.round(tierFactor * 10) / 10;
                     }
                 }
 
-                if (i % (supply / 12) == 0) {
+                if (i % (supply / 10) == 0) {
                     newDataset.data.push(price);
                     spent = balance - oldBalance;
                     console.log(i + " " + parseInt(balance) + " " + parseInt(spent) + " " + parseInt(spent * 0.2));

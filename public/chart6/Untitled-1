@@ -1,0 +1,19 @@
+ANT je ponzi coin kojem napuhujemo vrijednost ponzi funkcijama na nacin da ima collateral u ETH-u.
+
+U jednom trenutku micemo ETH kao collateral, a collateral za ANT umjesto ETH-a postaje Kriptokuna (AHRK) koja ima vrijednost 1:1 sa kunom (HRK).
+
+"Na prevaru" (koristeci nerazumijevanje i pohlepu) smo napuhali ANT tako da apoen vrijedi 20 ili 50 puta vise od kune i zatim smo ga iskoristili kao stabilni collateral za kripto fiat. 
+
+Kripto fiata takodjer imamo beskonacno u contractu, i mozemo ga koristiti kao collateral za ANT.
+
+Contract regulira odnose da ostanu stabilni.
+
+Ukoliko krene rasti cijena AHRK-a na exchangeu, ulozit ces svoje ANT-ove, napraviti AHRK i prodati ga na exchangeu te zatim kupiti nove ANT i pri tome zaraditi.
+
+Ukoliko krene padati cijena AHRK-a na exchangeu, prodat ces ANT, otkupiti AHRK na exchangeu, prodati ga contractu, zaraditi i kupiti natrag ANT.
+
+Vrijedi i obrnuto.
+
+Stvar nakon "otkacivanja" od ETH-a vise uopce ne ovisi o njemu, ANT u stvarnosti ima collateral u fiatima (kuni, dolaru, euru) kojih nas contract ima beskonacno (u obliku kripto fiata; i naravno, uvijek garantira tocni omjer), a kripto fiati imaju collateral u umjetno napuhanom ANT-u kojeg takodjer imamo beskonacno.
+
+Perpetuum debile.
