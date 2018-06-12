@@ -63,18 +63,19 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var deposit = 0;
-            var supply = 200000000;
+            var deposit = 200000000;
+            var supply = 0;
             var price = 0.0001;
             var price2 = 0;
             var priceFactor = 0.01;
-            var step = 1000;
+            var step = 1;
             var balance = 0;
             var tier = 64000;
             var switched = false;
             var holdingFactor = 0.5;
             var backupFactor = 0.5;
             var payouts = 0;
+            var tierCounter = 0;
 
             var newColor = window.chartColors['red'];
             var newDataset = {
@@ -96,15 +97,15 @@
                 fill: false
             };
 
-            newDataset.data.push(price);
-            newDataset1.data.push(price2);
+            for (var i = step; i <= deposit; i += step) {
+                // balance += step*holdingFactor;
+                // payouts += (step - step*holdingFactor);
 
-            for (var i = step; i <= supply; i += step) {
                 if (i % tier == 0) {
                     price += priceFactor;
                 }
 
-                if (i % (tier*1000) == 0 && priceFactor > 0.0000005) {
+                if (i % (tier*1000) == 0 && priceFactor > 0.0000001) {
                     priceFactor /= 4;
                 }
 
@@ -112,54 +113,52 @@
                     tier /= 2;
                 }
 
-                if (!switched) {
-                    if (i % (tier*100) == 0 && holdingFactor > 0.105) {
-                        holdingFactor -= 0.001;
-                    }
-                } else {
-                    if (i % (tier*100) == 0) {
-                        if (balance / (price2*supply) < 0.1) {
-                            holdingFactor += 0.001;
-                        } else if (holdingFactor > 0.1) {
-                            holdingFactor -= 0.001;
-                        }
-                    }                    
-                }
+                // if (!switched) {
+                //     if (i % (tier*100) == 0 && holdingFactor > 0.105) {
+                //         holdingFactor -= 0.001;
+                //     }
+                // } else {
+                //     if (i % (tier*100) == 0) {
+                //         if (balance / (price2*supply) < 0.1) {
+                //             holdingFactor += 0.001;
+                //         } else if (holdingFactor > 0.1) {
+                //             holdingFactor -= 0.001;
+                //         }
+                //     }                    
+                // }
 
 
-                holdingFactor = Math.round(holdingFactor * 1000) / 1000;
+                // holdingFactor = Math.round(holdingFactor * 1000) / 1000;
 
-                if (i % (tier*10) == 0 && backupFactor > 0.10) {
-                    backupFactor -= 0.001;
-                    backupFactor = Math.round(backupFactor * 1000) / 1000;
-                }
+                // if (i % (tier*10) == 0 && backupFactor > 0.10) {
+                //     backupFactor -= 0.001;
+                //     backupFactor = Math.round(backupFactor * 1000) / 1000;
+                // }
 
-                var investment = step*price;
-                balance += investment*holdingFactor
-                payouts += investment*(1 - holdingFactor)
+                // supply += (step / price);
 
-                if (i > tier) {
-                    if (price2 / price < 0.95 && !switched) {
-                        price2 = (balance / i) / backupFactor;
-                    } else {
-                        price2 = price * 0.95;
-                        switched = true;
-                    }
-                }
+                // if (i > tier) {
+                //     if (price2 / price < 0.95 && !switched) {
+                //         price2 = (balance / supply) / backupFactor;
+                //     } else {
+                //         price2 = price * 0.95;
+                //         switched = true;
+                //     }
+                // }
 
-                if (i % (supply / 10) == step && i > step) {
+                if (i % (deposit / 10) == step) {
                     newDataset.data.push(price);
-                    newDataset1.data.push(price2);
-                    payouts2 = i*price - balance;
-                    console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
+                    // newDataset1.data.push(price2);
+                    // payouts2 = i - balance;
+                    // console.log("deposits: " + i + " balance: " + parseInt(balance) + " supply: " + parseInt(supply) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
                 }
             }
 
-            payouts2 = i*price - balance;
-            console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
+            // payouts2 = i - balance;
+            // console.log("deposits: " + i + " balance: " + parseInt(balance) + " supply: " + parseInt(supply) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
 
             config.data.datasets.push(newDataset);
-            config.data.datasets.push(newDataset1);
+            // config.data.datasets.push(newDataset1);
             window.myLine.update();
 		};
 
