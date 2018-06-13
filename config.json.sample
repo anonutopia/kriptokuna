@@ -1,0 +1,7 @@
+{
+    "redis":                        "addr=127.0.0.1:6379",
+    "geth":                         "/home/anonymous/.ethereum/rinkeby/geth.ipc",
+    "contract_address":             "0x4504ffc9cd5f2019Ed06245D9CBC99618A01B575",
+    "eth_network":                  4,
+    "debug":                        true
+}
