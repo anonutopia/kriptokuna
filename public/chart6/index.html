@@ -23,7 +23,7 @@
 		var config = {
 			type: 'line',
 			data: {
-				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+				labels: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
 				datasets: []
 			},
 			options: {
@@ -64,11 +64,11 @@
 			window.myLine = new Chart(ctx, config);
 
             var deposit = 0;
-            var supply = 200000000;
+            var supply = 117600000;
             var price = 0.0001;
             var price2 = 0;
             var priceFactor = 0.01;
-            var step = 1000;
+            var step = 1;
             var balance = 0;
             var tier = 64000;
             var switched = false;
@@ -126,7 +126,6 @@
                     }                    
                 }
 
-
                 holdingFactor = Math.round(holdingFactor * 1000) / 1000;
 
                 if (i % (tier*10) == 0 && backupFactor > 0.10) {
@@ -151,12 +150,15 @@
                     newDataset.data.push(price);
                     newDataset1.data.push(price2);
                     payouts2 = i*price - balance;
-                    console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
+                    console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched + " price1: " + price + " price2: " + price2 + " priceFactor: " + priceFactor);
                 }
             }
 
             payouts2 = i*price - balance;
-            console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
+            console.log("supply: " + i + " balance: " + parseInt(balance) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched + " price1: " + price + " price2: " + price2 + " priceFactor: " + priceFactor);
+
+            newDataset.data.push(price);
+            newDataset1.data.push(price2);
 
             config.data.datasets.push(newDataset);
             config.data.datasets.push(newDataset1);
