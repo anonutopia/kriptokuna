@@ -63,12 +63,12 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var deposit = 25000000;
+            var deposit = 50000000;
             var supply = 0;
             var price = 0.01;
             var price2 = 0;
             var priceFactor = 0.01;
-            var step = 1;
+            var step = 5000;
             var balance = 0;
             var tier = 5000;
             var switched = false;
@@ -105,7 +105,7 @@
                     price += priceFactor;
                 }
 
-                if (i % (tier*1000) == 0 && priceFactor > 0.0000001) {
+                if (i % (tier*1000) == 0 && priceFactor > 0.000001) {
                     priceFactor /= 4;
                 }
 
