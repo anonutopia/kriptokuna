@@ -63,7 +63,7 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var deposit = 110000000;
+            var deposit = 500000000000;
             var supply = 0;
             var price = 0.01;
             var price2 = 0;
@@ -105,7 +105,7 @@
                     price += priceFactor;
                 }
 
-                if (i % (tier*1000) == 0 && priceFactor > 0.000001) {
+                if (i % (tier*1000) == 0 && priceFactor > 0.000005) {
                     priceFactor /= 4;
                 }
 
@@ -151,6 +151,9 @@
                     newDataset1.data.push(price2);
                     payouts2 = i - balance;
                     console.log("deposits: " + i + " balance: " + parseInt(balance) + " supply: " + parseInt(supply) + " payouts: " + payouts + " backup: " + balance / (price2*supply) + " holding factor: " + holdingFactor + " payouts2: " + payouts2 + " price ratio: " + (price2 / price) + " switched: " + switched);
+                    if (i == (0 + step)) {
+                        // supply += 5000000;
+                    }
                 }
             }
 
