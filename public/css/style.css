@@ -282,10 +282,12 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 
 .navbar-brand {
     padding: 0;
+    /* margin: 15px 0; */
+    padding-top: 9px;
 }
 
 .navbar-brand .logo, .navbar-brand .logo-alt {
-    max-height: 50px;
+    max-height: 35px;
     display: block;
 }
 
@@ -1479,8 +1481,9 @@ header {
 }
 
 .footer-logo>a>img {
-    max-height: 80px;
-    max-width: 90%;
+    max-height: 60px;
+    max-width: 80%;
+    margin-left: -20px;
 }
 
 .footer-follow {
