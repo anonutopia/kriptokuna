@@ -622,6 +622,9 @@ header {
 .home-content button {
   margin-top: 20px;
 }
+.home-content a {
+  margin: 0px 15px 15px 15px;
+}
 
 .header-wrapper h2 {
     display: inline-block;
@@ -1593,6 +1596,10 @@ header {
 
   .blog-comments .media .media {
       margin:0px -15px;
+  }
+
+  .home-content:first-child {
+      margin-top: 40px;
   }
 }
 
