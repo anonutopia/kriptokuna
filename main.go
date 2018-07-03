@@ -29,6 +29,7 @@ func main() {
 	m.Get("/volontiraj/", newPageData, volontirajView)
 	m.Get("/plan/", newPageData, planView)
 	m.Get("/novcanik/", newPageData, novcanikView)
+	m.Get("/anote/", newPageData, anoteView)
 
 	// m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
 	m.Post("/volontiraj/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)

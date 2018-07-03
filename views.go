@@ -110,6 +110,12 @@ func novcanikView(ctx *macaron.Context) {
 	ctx.HTML(200, "novcanik")
 }
 
+func anoteView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Što je ANOTE? | "
+
+	ctx.HTML(200, "anote")
+}
+
 func view404(ctx *macaron.Context) {
 	ctx.Data["URI"] = "/not-found/"
 	ctx.Data["Title"] = "404 | "
