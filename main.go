@@ -27,8 +27,10 @@ func main() {
 	m.Get("/blokirani/", newPageData, manifestView)
 	m.Get("/pitanja/", newPageData, faqView)
 	m.Get("/volontiraj/", newPageData, volontirajView)
+	m.Get("/plan/", newPageData, planView)
+	m.Get("/novcanik/", newPageData, novcanikView)
 
-	m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
+	// m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
 	m.Post("/volontiraj/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)
 
 	m.NotFound(view404)

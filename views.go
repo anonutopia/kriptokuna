@@ -98,6 +98,18 @@ func signupView(ctx *macaron.Context, sup SignupForm, f *session.Flash, cpt *cap
 	ctx.HTML(200, "home")
 }
 
+func planView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "O nama | "
+
+	ctx.HTML(200, "plan")
+}
+
+func novcanikView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Kako koristiti novčanik? | "
+
+	ctx.HTML(200, "novcanik")
+}
+
 func view404(ctx *macaron.Context) {
 	ctx.Data["URI"] = "/not-found/"
 	ctx.Data["Title"] = "404 | "
