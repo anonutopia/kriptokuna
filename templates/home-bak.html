@@ -1,0 +1,142 @@
+    <!-- Numbers -->
+    <div id="numbers" class="section sm-padding">
+
+        <!-- Background Image -->
+        <div class="bg-img" style="background-image: url('/img/background10.jpeg');">
+            <div class="overlay"></div>
+        </div>
+        <!-- /Background Image -->
+
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Row -->
+            <div class="row">
+
+                <!-- number -->
+                <div class="col-sm-4">
+                    <div class="number">
+                        <i class="fa fa-lock"></i>
+                        <h3 class="white-text"><span class="counter">{{ .Blocked }}</span></h3>
+                        <span class="white-text">Blokirani</span>
+                    </div>
+                </div>
+                <!-- /number -->
+
+                <!-- number -->
+                <div class="col-sm-4">
+                    <div class="number">
+                        <i class="fa fa-car"></i>
+                        <h3 class="white-text"><span class="counter">{{ .Carsharing }}</span></h3>
+                        <span class="white-text">Uberovci</span>
+                    </div>
+                </div>
+                <!-- /number -->
+
+                <!-- number -->
+                <div class="col-sm-4">
+                    <div class="number">
+                        <i class="fa fa-rebel"></i>
+                        <h3 class="white-text"><span class="counter">{{ .Hacktivists }}</span></h3>
+                        <span class="white-text">Hacktivisti</span>
+                    </div>
+                </div>
+                <!-- /number -->
+
+            </div>
+            <!-- /Row -->
+
+        </div>
+        <!-- /Container -->
+
+    </div>
+    <!-- /Numbers -->
+
+    <!-- Contact -->
+    <div id="signup" class="section md-padding">
+
+        <!-- Container -->
+        <div class="container">
+
+            <!-- Row -->
+            <div class="row">
+
+                <!-- Section-header -->
+                <div class="section-header text-center">
+                    <h2 class="title">Prijavi se i pomozi u realizaciji i širenju ideje</h2>
+                </div>
+                <!-- /Section-header -->
+
+                <!-- contact -->
+                <div class="col-sm-6 col-sm-offset-3" style="margin-bottom: 60px;">
+                    <div class="contact">
+                        <i class="fa fa-rebel"></i>
+                        <h3>Postani Hacktivist</h3>
+                    </div>
+                </div>
+                <!-- /contact -->
+
+                <!-- contact form -->
+                <div class="col-md-6 col-sm-offset-3">
+                    <form class="contact-form" style="margin-top: 0;" action="/#signup" method="POST">
+{{ if not .Flash.SuccessMsg}}
+                        <input type="email" class="input" placeholder="Email (obavezno polje)" style="height: 56px; padding: 15px 20px;" name="email" value="{{ .Form.Email }}">
+
+                        <div class="row" style="margin-bottom: 0px;">
+                            <div class="col-md-5 col-md-push-7">{{ .Captcha.CreateHtml }}</div>
+                            <div class="col-md-7 col-md-pull-5"><input type="text" class="input" placeholder="Captcha (obaveno polje)" name="captcha" style="width: 100%; height: 56px; padding: 15px 20px;"></div>
+                        </div>
+{{ end }}
+
+{{ if .Flash.ErrorMsg }}
+                        <p class="bg-danger text-danger text-left" style="margin-bottom: 20px; padding: 15px 20px;">{{ .Flash.ErrorMsg }}</p>
+{{ end }}
+{{ if .Flash.SuccessMsg }}
+                        <p class="bg-success text-success text-left" style="margin-bottom: 20px; padding: 15px 20px;">{{ .Flash.SuccessMsg }}</p>
+{{ end }}
+{{ if .Flash.WarningMsg }}
+                        <p class="bg-warning text-warning text-left" style="margin-bottom: 20px; padding: 15px 20px;"><strong>{{ .Flash.WarningMsg }}</strong></p>
+{{ end }}
+
+{{ if not .Flash.SuccessMsg}}
+                        <div class="text-left" style="margin-bottom: 20px;">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios1" value="1"{{ if eq .Form.Type 1 }} checked{{ end }}>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    Blokiran/a sam
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios2" value="2"{{ if eq .Form.Type 2 }} checked{{ end }}>
+                                <label class="form-check-label" for="exampleRadios2">
+                                    Prevozim ljude uz pomoć aplikacije
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios3" value="3"{{ if eq .Form.Type 3 }} checked{{ end }}>
+                                <label class="form-check-label" for="exampleRadios3">
+                                    Koristim aplikaciju za prijevoz
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="type" id="exampleRadios4" value="4"{{ if eq .Form.Type 4 }} checked{{ end }}>
+                                <label class="form-check-label" for="exampleRadios4">
+                                    Generalno sam zainteresiran/a
+                                </label>
+                            </div>
+                        </div>
+
+                        <button class="main-btn"><strong>Da, želim sudjelovati!</strong></button>
+{{ end }}
+                    </form>
+                </div>
+                <!-- /contact form -->
+
+            </div>
+            <!-- /Row -->
+
+        </div>
+        <!-- /Container -->
+
+    </div>
+    <!-- /Contact -->
