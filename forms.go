@@ -24,3 +24,15 @@ type HackerSignupForm struct {
 func (cf HackerSignupForm) Error(ctx *macaron.Context, errs binding.Errors) {
 	ctx.Data["Errors"] = errs
 }
+
+type ContactForm struct {
+	Name    string `form:"name" binding:"Required"`
+	Email   string `form:"email" binding:"Required"`
+	Subject string `form:"subject"`
+	Message string `form:"message" binding:"Required"`
+	Captcha string `form:"captcha" binding:"Required"`
+}
+
+func (cf ContactForm) Error(ctx *macaron.Context, errs binding.Errors) {
+	ctx.Data["Errors"] = errs
+}

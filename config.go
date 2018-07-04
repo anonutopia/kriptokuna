@@ -12,6 +12,7 @@ type Config struct {
 	ContractAddress string `json:"contract_address"`
 	EthNetwork      uint   `json:"eth_network"`
 	Debug           bool   `json:"debug"`
+	SendgridKey     string `json:"sendgrid_key"`
 }
 
 func (sc *Config) Load(configFile string) error {

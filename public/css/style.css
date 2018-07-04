@@ -216,13 +216,13 @@ ul, ol {
 /* --  Input  -- */
 
 input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="date"], input[type="url"], input[type="tel"], textarea {
-    height: 40px;
+    /* height: 40px; */
     width: 100%;
     border: none;
     background: #D4D4D4;
     border-bottom: 2px solid #EEE;
     color: #354052;
-    padding: 0px 10px;
+    padding: 15px 10px;
     opacity: 0.5;
     -webkit-transition: 0.2s border-color, 0.2s opacity;
     transition: 0.2s border-color, 0.2s opacity;
