@@ -116,6 +116,12 @@ func anoteView(ctx *macaron.Context) {
 	ctx.HTML(200, "anote")
 }
 
+func transparentnostView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Transparentnost | "
+
+	ctx.HTML(200, "transparentnost")
+}
+
 func view404(ctx *macaron.Context) {
 	ctx.Data["URI"] = "/not-found/"
 	ctx.Data["Title"] = "404 | "
