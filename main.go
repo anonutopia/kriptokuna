@@ -26,7 +26,7 @@ func main() {
 	m.Get("/o-kriptokuni/", newPageData, kriptokunaView)
 	m.Get("/blokirani/", newPageData, manifestView)
 	m.Get("/pitanja/", newPageData, faqView)
-	m.Get("/volontiraj/", newPageData, volontirajView)
+	m.Get("/pridruzi-se/", newPageData, volontirajView)
 	m.Get("/plan/", newPageData, planView)
 	m.Get("/novcanik/", newPageData, novcanikView)
 	m.Get("/anote/", newPageData, anoteView)
@@ -34,7 +34,7 @@ func main() {
 	m.Get("/kontakt/", newPageData, kontaktView)
 
 	// m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
-	m.Post("/volontiraj/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)
+	m.Post("/pridruzi-se/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)
 	m.Post("/kontakt/", binding.Bind(ContactForm{}), newPageData, kontaktViewPost)
 
 	m.NotFound(view404)

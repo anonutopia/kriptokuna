@@ -24,13 +24,13 @@ func kriptokunaView(ctx *macaron.Context) {
 }
 
 func manifestView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Manifest Blokiranima | "
+	ctx.Data["Title"] = "Poruka Blokiranima | "
 
 	ctx.HTML(200, "blokirani")
 }
 
 func volontirajView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Volontiraj već danas! | "
+	ctx.Data["Title"] = "Pridruži se već danas! | "
 
 	hsup := &HackerSignupForm{Type: "avatari"}
 	ctx.Data["Form"] = hsup
@@ -49,7 +49,7 @@ func volontirajPostView(ctx *macaron.Context, hsup HackerSignupForm, f *session.
 			db.FirstOrCreate(ha, ha)
 			f.Success("Dodan/a u našu Core Team bazu, javit ćemo se uskoro.")
 			f.Warning("Za Kriptokunu reci svim korisnicima Ubera (vozačima i putnicima) i svim blokiranim građanima koje poznaješ!")
-			ctx.Redirect("/volontiraj/#hackersignup")
+			ctx.Redirect("/pridruzi-se/#hackersignup")
 			return
 		} else {
 			f.Error("Email je obavezno polje.")
