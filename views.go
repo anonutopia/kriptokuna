@@ -135,7 +135,7 @@ func kontaktViewPost(ctx *macaron.Context, contact ContactForm, cpt *captcha.Cap
 	em.FromName = contact.Name
 	em.FromEmail = contact.Email
 	em.ToName = "Pragmatic"
-	em.ToEmail = "cryptopragmatic@protonmail.com"
+	em.ToEmail = "anonutopia@protonmail.com"
 	if len(contact.Subject) == 0 {
 		em.Subject = "Contact Form Message"
 	} else {
