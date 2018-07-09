@@ -105,7 +105,7 @@ func planView(ctx *macaron.Context) {
 }
 
 func novcanikView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Kako koristiti novčanik? | "
+	ctx.Data["Title"] = "Kako kupiti Anotu? | "
 
 	ctx.HTML(200, "novcanik")
 }
