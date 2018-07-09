@@ -16,3 +16,4 @@ docs/procedure.txt
 .vscode/
 .vscode/*
 appnew*
+deploy-test.sh

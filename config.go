@@ -13,6 +13,7 @@ type Config struct {
 	EthNetwork      uint   `json:"eth_network"`
 	Debug           bool   `json:"debug"`
 	SendgridKey     string `json:"sendgrid_key"`
+	Port            uint   `json:"port"`
 }
 
 func (sc *Config) Load(configFile string) error {

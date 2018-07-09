@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
@@ -32,6 +33,7 @@ func main() {
 	m.Get("/anote/", newPageData, anoteView)
 	m.Get("/transparentnost/", newPageData, transparentnostView)
 	m.Get("/kontakt/", newPageData, kontaktView)
+	m.Get("/kupi/", newPageData, kupiView)
 
 	// m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
 	m.Post("/pridruzi-se/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)
@@ -41,5 +43,5 @@ func main() {
 
 	// m.Run()
 	log.Println("Server is running...")
-	http.ListenAndServe("0.0.0.0:4001", m)
+	http.ListenAndServe(fmt.Sprintf("0.0.0.0:%d", conf.Port), m)
 }
