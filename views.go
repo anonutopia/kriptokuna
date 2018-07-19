@@ -166,12 +166,6 @@ func kontaktViewPost(ctx *macaron.Context, contact ContactForm, cpt *captcha.Cap
 	ctx.HTML(200, "kontakt")
 }
 
-func kupiView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Kupi Anotu | "
-
-	ctx.HTML(200, "kupi")
-}
-
 func view404(ctx *macaron.Context) {
 	ctx.Data["URI"] = "/not-found/"
 	ctx.Data["Title"] = "404 | "
