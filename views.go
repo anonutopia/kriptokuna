@@ -17,6 +17,12 @@ func homeView(ctx *macaron.Context) {
 	ctx.HTML(200, "home")
 }
 
+func airdropView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Zatraži 1 besplatnu anotu! | "
+
+	ctx.HTML(200, "airdrop")
+}
+
 func kriptokunaView(ctx *macaron.Context) {
 	ctx.Data["Title"] = "Što je Kriptokuna? | "
 
