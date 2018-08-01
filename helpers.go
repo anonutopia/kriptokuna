@@ -1,13 +1,16 @@
 package main
 
 import (
+	"strings"
+
 	"github.com/go-macaron/session"
 	"gopkg.in/macaron.v1"
 )
 
 func newPageData(ctx *macaron.Context, sess session.Store) {
 	ctx.Data["ProjectName"] = PROJECT_NAME
-	ctx.Data["URI"] = ctx.Req.RequestURI
+	uri := strings.Split(ctx.Req.RequestURI, "?")
+	ctx.Data["URI"] = uri[0]
 
 	var hacktivists []Hacktivist
 	carsharing := 0
