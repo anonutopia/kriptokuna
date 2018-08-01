@@ -33,6 +33,7 @@ func main() {
 	m.Get("/anote/", newPageData, anoteView)
 	m.Get("/transparentnost/", newPageData, transparentnostView)
 	m.Get("/kontakt/", newPageData, kontaktView)
+	m.Get("/zaradi/", newPageData, zaradiView)
 
 	// m.Post("/", binding.Bind(SignupForm{}), newPageData, signupView)
 	m.Post("/pridruzi-se/", binding.Bind(HackerSignupForm{}), newPageData, volontirajPostView)
