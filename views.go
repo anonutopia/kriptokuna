@@ -36,9 +36,15 @@ func manifestView(ctx *macaron.Context) {
 }
 
 func zaradiView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Zaradi u Anonutopiji | "
+	ctx.Data["Title"] = "Zarada u Anonutopiji | "
 
 	ctx.HTML(200, "zaradi")
+}
+
+func projektiView(ctx *macaron.Context) {
+	ctx.Data["Title"] = "Projekti Anonutopije | "
+
+	ctx.HTML(200, "projekti")
 }
 
 func volontirajView(ctx *macaron.Context) {
