@@ -24,6 +24,7 @@ func main() {
 	db = initDb()
 
 	m.Get("/", newPageData, homeView)
+	m.Get("/airdrop/", newPageData, airdropView)
 	m.Get("/o-kriptokuni/", newPageData, kriptokunaView)
 	m.Get("/blokirani/", newPageData, manifestView)
 	m.Get("/pitanja/", newPageData, faqView)
