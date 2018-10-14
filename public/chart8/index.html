@@ -68,6 +68,8 @@
             var step = 500;
             var tier = 1000;
             var priceFactor = 0.01;
+			var anote = 0;
+			var shown = false;
 
             var newColor = window.chartColors['blue'];
             var newDataset = {
@@ -85,13 +87,24 @@
                     price += priceFactor;
                 }
 
-                if (i % (tier*25000) == 0 && priceFactor > 0.000005) {
+				anote += (step / price);
+
+				if (anote >= 20000000 && !shown) {
+					console.log("*** " + price + " " + anote + " " + i);
+					shown = true;
+				}
+
+				if (i % (tier*10) == 0 && tier < 25000) {
+					tier += 1000;
+				}
+
+                if (i % (tier*1000) == 0 && priceFactor > 0.000005) {
                     priceFactor /= 2;
                 }
 
                 if (i % (deposit / 10) == step) {
                     newDataset.data.push(price);
-                    console.log(price);
+                    console.log(price + " " + anote + " " + i);
                 }
             }
 
