@@ -62,10 +62,10 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-			var anotes = 20000000;
-			var tier = 10000;
+			var anotes = 25000000;
+			var tier = 1000;
 			var price = 0.01;
-			var priceFactor = 0.015;
+			var priceFactor = 0.0021;
 			var deposits = 0;
 
             var newColor = window.chartColors['blue'];
@@ -88,10 +88,11 @@
 				price += priceFactor;
 				deposits += (price * tier);
 
-				if (priceFactor > 0.00001) {
-					priceFactor -= 0.00001;
-					priceFactor = parseFloat(parseInt(priceFactor * 100000))/100000;
+				if (i % (tier * 1000) == 0 && priceFactor > 0.0001) {
+					priceFactor -= 0.0001;
+					priceFactor = parseFloat(parseInt(priceFactor * 10000))/10000;
 				}
+				
             }
 
             config.data.datasets.push(newDataset);
