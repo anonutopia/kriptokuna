@@ -19,11 +19,10 @@
 		<canvas id="canvas"></canvas>
 	</div>
 	<script>
-		var MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 		var config = {
 			type: 'line',
 			data: {
-				labels: ['0', '20', '40', '60', '80', '100', '120', '140', '160', '180'],
+				labels: ['0', '20', '40', '60', '80', '100', '120', '140', '160', '180', '200'],
 				datasets: []
 			},
 			options: {
@@ -63,13 +62,10 @@
 			var ctx = document.getElementById('canvas').getContext('2d');
 			window.myLine = new Chart(ctx, config);
 
-            var deposit = 10000000;
-            var price = 0.01;
-            var step = 500;
-            var tier = 1000;
-            var priceFactor = 0.01;
-			var anote = 0;
-			var shown = false;
+			var deposit = 30000000;
+			var tier = 1000;
+			var price = 0.01;
+			var priceFactor = 0.01;
 
             var newColor = window.chartColors['blue'];
             var newDataset = {
@@ -81,32 +77,19 @@
                 fill: false
             };
 
-            for (var i = 0; i <= deposit; i += step) {
-                
-                if (i % tier == 0) {
-                    price += priceFactor;
-                }
+            for (var i = 0; i <= deposit; i += tier) {
+				price += priceFactor;
 
-				anote += (step / price);
-
-				// if (anote >= 20000000 && !shown) {
-				// 	console.log("*** " + price + " " + anote + " " + i);
-				// 	shown = true;
-				// }
-
-				// if (i % (tier*10) == 0 && tier < 25000) {
-				// 	tier += 1000;
-				// }
-
-                if (i % (tier*1000) == 0 && priceFactor > 0.000005) {
-                    priceFactor /= 2;
-                }
-
-                if (i % (deposit / 10) == step) {
-                    newDataset.data.push(price);
-                    console.log(price + " " + anote + " " + i);
-                }
+				if (i % (deposit / 10) == tier) {
+                	newDataset.data.push(price);
+					if (i < 200000000) {
+						priceFactor /= 4;
+						console.log(i);
+					}
+				}
             }
+
+			newDataset.data.push(price);
 
             config.data.datasets.push(newDataset);
             window.myLine.update();
