@@ -129,7 +129,7 @@ func novcanikView(ctx *macaron.Context) {
 }
 
 func anoteView(ctx *macaron.Context) {
-	ctx.Data["Title"] = "Što je ANOTE? | "
+	ctx.Data["Title"] = "Što je Anote? | "
 
 	ctx.HTML(200, "anote")
 }
