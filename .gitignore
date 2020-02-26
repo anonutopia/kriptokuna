@@ -1,19 +1,18 @@
-kriptokuna
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+
 config.json
-debug
-deploy.sh
-kkn.db
-docs/accounts.txt
-docs/*.png
-docs/general.txt
-docs/hackers.txt
-docs/kriptokuna.txt
-docs/manifest.txt
-docs/oracles.txt
-docs/anoneutopia.txt
-docs/plan.txt
-docs/procedure.txt
-.vscode/
-.vscode/*
-appnew*
-deploy-test.sh
+kriptokuna*
