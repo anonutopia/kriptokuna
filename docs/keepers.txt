@@ -1,4 +1,0 @@
-ether
-bitcoin
-stock
-gold
