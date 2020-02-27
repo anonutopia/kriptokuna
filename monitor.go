@@ -134,9 +134,19 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		err = wm.doPayouts(ns.BlockchainHeight-1, "")
+		t, err := total(ns.BlockchainHeight-1, "")
 		if err != nil {
-			logTelegram(fmt.Sprintf("wm.doPayouts error: %e", err))
+			logTelegram(fmt.Sprintf("total error: %e", err))
+			return
+		}
+
+		new := 0
+
+		if new > 0 {
+			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, new)
+			if err != nil {
+				logTelegram(fmt.Sprintf("wm.doPayouts error: %e", err))
+			}
 		}
 
 		ks.ValueInt = uint64(time.Now().Day())
@@ -144,7 +154,7 @@ func (wm *WavesMonitor) checkPayouts() {
 	}
 }
 
-func (wm *WavesMonitor) doPayouts(height int, after string) error {
+func (wm *WavesMonitor) doPayouts(height int, after string, total int, new int) error {
 	abdr, err := wnc.AssetsBalanceDistribution(conf.TokenID, height, 100, after)
 	if err != nil {
 		return err
@@ -152,13 +162,32 @@ func (wm *WavesMonitor) doPayouts(height int, after string) error {
 
 	for a, v := range abdr.Items {
 		if !exclude(conf.Exclude, a) {
-			log.Println(a)
-			log.Println(v)
+			ratio := float64(v) / float64(total)
+			amount := int(float64(new) * ratio)
+
+			if amount > 0 {
+				atr := &gowaves.AssetsTransferRequest{
+					Amount:     amount,
+					AssetID:    conf.TokenID,
+					FeeAssetID: conf.TokenID,
+					Fee:        5,
+					Recipient:  a,
+					Sender:     conf.NodeAddress,
+				}
+
+				_, err = wnc.AssetsTransfer(atr)
+				if err != nil {
+					log.Printf("[doPayouts] error assets transfer: %s", err)
+					logTelegram(fmt.Sprintf("[doPayouts] error assets transfer: %s", err))
+				} else {
+					log.Printf("Sent token: %s => %d", a, amount)
+				}
+			}
 		}
 	}
 
 	if abdr.HasNext {
-		return wm.doPayouts(height, abdr.LastItem)
+		return wm.doPayouts(height, abdr.LastItem, total, new)
 	}
 
 	return nil
@@ -171,6 +200,27 @@ func exclude(slice []string, val string) bool {
 		}
 	}
 	return false
+}
+
+func total(height int, after string) (int, error) {
+	t := 0
+
+	abdr, err := wnc.AssetsBalanceDistribution(conf.TokenID, height, 100, after)
+	if err != nil {
+		return 0, err
+	}
+
+	for a, v := range abdr.Items {
+		if !exclude(conf.Exclude, a) {
+			t = t + v
+		}
+	}
+
+	if abdr.HasNext {
+		return total(height, abdr.LastItem)
+	}
+
+	return t, nil
 }
 
 func initMonitor() {

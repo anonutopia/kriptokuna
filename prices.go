@@ -12,6 +12,7 @@ type Prices struct {
 	WAVES float64 `json:"WAVES"`
 	BTC   float64 `json:"BTC"`
 	ETH   float64 `json:"ETH"`
+	USD   float64 `json:"USD"`
 }
 
 type PriceClient struct {
