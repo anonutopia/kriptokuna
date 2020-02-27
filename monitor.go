@@ -157,8 +157,6 @@ func (wm *WavesMonitor) checkPayouts() {
 
 		new := int(((float64(abr.Balance) / float64(1000000)) / prices.USD) * 100)
 
-		log.Println(new)
-
 		if new > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, new)
 			if err != nil {
