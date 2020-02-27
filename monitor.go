@@ -8,7 +8,10 @@ import (
 	"github.com/anonutopia/gowaves"
 )
 
-const satInBtc = uint64(100000000)
+const (
+	satInBtc   = uint64(100000000)
+	neutrinoID = "DG2xFkPdDwKUoBkzGAhQtLpSGzfXLiCYPEzeKH2Ad24p"
+)
 
 // WavesMonitor represents waves monitoring object
 type WavesMonitor struct {
@@ -140,7 +143,21 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		new := 0
+		abr, err := wnc.AssetsBalance(conf.NodeAddress, neutrinoID)
+		if err != nil {
+			logTelegram(fmt.Sprintf("wnc.AssetsBalance error: %e", err))
+			return
+		}
+
+		prices, err := pc.DoRequest()
+		if err != nil {
+			logTelegram(fmt.Sprintf("pc.DoRequest error: %e", err))
+			return
+		}
+
+		new := int(((float64(abr.Balance) / float64(1000000)) / prices.USD) * 100)
+
+		log.Println(new)
 
 		if new > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, new)
