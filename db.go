@@ -19,8 +19,5 @@ func initDb() *gorm.DB {
 	db.LogMode(conf.Debug)
 	db.AutoMigrate(&KeyValue{}, &Transaction{}, &User{})
 
-	ks := &KeyValue{Key: "airdropSent", ValueInt: 0}
-	db.FirstOrCreate(ks, ks)
-
 	return db
 }

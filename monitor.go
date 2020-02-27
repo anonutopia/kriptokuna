@@ -30,6 +30,8 @@ func (wm *WavesMonitor) start() {
 			}
 		}
 
+		wm.checkPayouts()
+
 		time.Sleep(time.Second)
 	}
 }
@@ -119,6 +121,56 @@ func (wm *WavesMonitor) sellAsset(t *gowaves.TransactionsAddressLimitResponse) {
 	} else {
 		log.Printf("Sent WAVES: %s => %d", t.Sender, amount)
 	}
+}
+
+func (wm *WavesMonitor) checkPayouts() {
+	ks := &KeyValue{Key: "lastPayoutDay"}
+	db.FirstOrCreate(ks, ks)
+
+	if ks.ValueInt != uint64(time.Now().Day()) {
+		ns, err := wnc.NodeStatus()
+		if err != nil {
+			logTelegram(fmt.Sprintf("wnc.NodeStatus error: %e", err))
+			return
+		}
+
+		err = wm.doPayouts(ns.BlockchainHeight-1, "")
+		if err != nil {
+			logTelegram(fmt.Sprintf("wm.doPayouts error: %e", err))
+		}
+
+		ks.ValueInt = uint64(time.Now().Day())
+		db.Save(ks)
+	}
+}
+
+func (wm *WavesMonitor) doPayouts(height int, after string) error {
+	abdr, err := wnc.AssetsBalanceDistribution(conf.TokenID, height, 100, after)
+	if err != nil {
+		return err
+	}
+
+	for a, v := range abdr.Items {
+		if !exclude(conf.Exclude, a) {
+			log.Println(a)
+			log.Println(v)
+		}
+	}
+
+	if abdr.HasNext {
+		return wm.doPayouts(height, abdr.LastItem)
+	}
+
+	return nil
+}
+
+func exclude(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
 }
 
 func initMonitor() {
