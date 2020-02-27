@@ -64,18 +64,61 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, t *gowaves.Transacti
 }
 
 func (wm *WavesMonitor) purchaseAsset(t *gowaves.TransactionsAddressLimitResponse) {
-	log.Println("purchaseAsset")
 	prices, err := pc.DoRequest()
 	if err != nil {
 		logTelegram(fmt.Sprintf("pc.DoRequest error: %e", err))
 		return
 	}
-	amount := (float64(t.Amount) / float64(satInBtc)) / prices.WAVES
-	log.Println(amount)
+
+	amount := int((float64(t.Amount) / float64(satInBtc)) / prices.WAVES * 100)
+
+	if amount > 5 {
+		amount = amount - 5
+	}
+
+	atr := &gowaves.AssetsTransferRequest{
+		Amount:     amount,
+		AssetID:    conf.TokenID,
+		FeeAssetID: conf.TokenID,
+		Fee:        5,
+		Recipient:  t.Sender,
+		Sender:     conf.NodeAddress,
+	}
+
+	_, err = wnc.AssetsTransfer(atr)
+	if err != nil {
+		log.Printf("[purchaseAsset] error assets transfer: %s", err)
+		logTelegram(fmt.Sprintf("[purchaseAsset] error assets transfer: %s", err))
+	} else {
+		log.Printf("Sent token: %s => %d", t.Sender, amount)
+	}
 }
 
 func (wm *WavesMonitor) sellAsset(t *gowaves.TransactionsAddressLimitResponse) {
-	log.Println("sellAsset")
+	prices, err := pc.DoRequest()
+	if err != nil {
+		logTelegram(fmt.Sprintf("pc.DoRequest error: %e", err))
+		return
+	}
+
+	amount := int((float64(t.Amount) / float64(100)) * prices.WAVES * float64(satInBtc))
+
+	atr := &gowaves.AssetsTransferRequest{
+		Amount:     amount,
+		AssetID:    "",
+		FeeAssetID: conf.TokenID,
+		Fee:        5,
+		Recipient:  t.Sender,
+		Sender:     conf.NodeAddress,
+	}
+
+	_, err = wnc.AssetsTransfer(atr)
+	if err != nil {
+		log.Printf("[sellAsset] error assets transfer: %s", err)
+		logTelegram(fmt.Sprintf("[sellAsset] error assets transfer: %s", err))
+	} else {
+		log.Printf("Sent WAVES: %s => %d", t.Sender, amount)
+	}
 }
 
 func initMonitor() {
