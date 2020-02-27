@@ -8,8 +8,6 @@ import (
 	"net/http"
 )
 
-const url = "https://min-api.cryptocompare.com/data/price?fsym=EUR&tsyms=WAVES,BTC,ETH"
-
 type Prices struct {
 	WAVES float64 `json:"WAVES"`
 	BTC   float64 `json:"BTC"`
@@ -26,7 +24,7 @@ func (w *PriceClient) DoRequest() (*Prices, error) {
 	var req *http.Request
 	var err error
 
-	req, err = http.NewRequest(http.MethodGet, url, nil)
+	req, err = http.NewRequest(http.MethodGet, conf.PricesUrl, nil)
 
 	req.Header.Set("Content-Type", "application/json")
 

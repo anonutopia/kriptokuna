@@ -6,7 +6,7 @@ import (
 
 func initWaves() *gowaves.WavesNodeClient {
 	wnc := &gowaves.WavesNodeClient{
-		Host:   "anode1.anonutopia.com",
+		Host:   conf.WavesNode,
 		Port:   6869,
 		ApiKey: conf.WavesNodeAPIKey,
 	}

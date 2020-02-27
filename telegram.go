@@ -8,6 +8,8 @@ import (
 	tgbotapi "gopkg.in/telegram-bot-api.v4"
 )
 
+const lang = "hr"
+
 // Telegram group ID consts
 const (
 	tAnonBalkan  = -1001161265502
@@ -15,6 +17,7 @@ const (
 	tAnonTaxi    = -1001422544298
 	tAnonTaxiPrv = -1001271198034
 	tAnonOps     = -297434742
+	tKriptokuna  = -1001456424919
 )
 
 func initBot() *tgbotapi.BotAPI {
@@ -27,7 +30,7 @@ func initBot() *tgbotapi.BotAPI {
 
 	log.Printf("Authorized on account %s", bot.Self.UserName)
 
-	msg := tgbotapi.NewMessage(tAnonOps, "AnonFounder successfully started. 🚀")
+	msg := tgbotapi.NewMessage(tAnonOps, "KriptokunaBot successfully started. 🚀")
 	bot.Send(msg)
 
 	return bot
