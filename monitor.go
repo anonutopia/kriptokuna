@@ -75,17 +75,17 @@ func (wm *WavesMonitor) purchaseAsset(t *gowaves.TransactionsAddressLimitRespons
 		return
 	}
 
-	amount := int((float64(t.Amount) / float64(satInBtc)) / prices.WAVES * 100)
+	amount := int((float64(t.Amount) / float64(satInBtc)) / prices.WAVES * 1000000)
 
-	if amount > 5 {
-		amount = amount - 5
+	if amount > 50000 {
+		amount = amount - 50000
 	}
 
 	atr := &gowaves.AssetsTransferRequest{
 		Amount:     amount,
 		AssetID:    conf.TokenID,
 		FeeAssetID: conf.TokenID,
-		Fee:        5,
+		Fee:        50000,
 		Recipient:  t.Sender,
 		Sender:     conf.NodeAddress,
 	}
@@ -106,13 +106,13 @@ func (wm *WavesMonitor) sellAsset(t *gowaves.TransactionsAddressLimitResponse) {
 		return
 	}
 
-	amount := int((float64(t.Amount) / float64(100)) * prices.WAVES * float64(satInBtc))
+	amount := int((float64(t.Amount) / float64(1000000)) * prices.WAVES * float64(satInBtc))
 
 	atr := &gowaves.AssetsTransferRequest{
 		Amount:     amount,
 		AssetID:    "",
 		FeeAssetID: conf.TokenID,
-		Fee:        5,
+		Fee:        50000,
 		Recipient:  t.Sender,
 		Sender:     conf.NodeAddress,
 	}
@@ -131,6 +131,7 @@ func (wm *WavesMonitor) checkPayouts() {
 	db.FirstOrCreate(ks, ks)
 
 	if ks.ValueInt != uint64(time.Now().Day()) {
+		newUsd := 0
 		ns, err := wnc.NodeStatus()
 		if err != nil {
 			logTelegram(fmt.Sprintf("wnc.NodeStatus error: %e", err))
@@ -143,10 +144,17 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		abr, err := wnc.AssetsBalance(conf.NodeAddress, neutrinoID)
+		talr, err := wnc.TransactionsAddressLimit(conf.NodeAddress, 100)
 		if err != nil {
-			logTelegram(fmt.Sprintf("wnc.AssetsBalance error: %e", err))
+			logTelegram(fmt.Sprintf("wnc.TransactionsAddressLimit error: %e", err))
 			return
+		}
+
+		for _, t := range talr[0] {
+			if t.Type == 11 {
+				newUsd = t.Transfers[0].Amount
+				break
+			}
 		}
 
 		prices, err := pc.DoRequest()
@@ -155,7 +163,7 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		new := int(((float64(abr.Balance) / float64(1000000)) / prices.USD) * 100)
+		new := int(((float64(newUsd) / float64(1000000)) / prices.USD) * 1000000)
 
 		if new > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, new)
@@ -185,7 +193,7 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, new int) 
 					Amount:     amount,
 					AssetID:    conf.TokenID,
 					FeeAssetID: conf.TokenID,
-					Fee:        5,
+					Fee:        50000,
 					Recipient:  a,
 					Sender:     conf.NodeAddress,
 				}
