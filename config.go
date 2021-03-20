@@ -11,6 +11,8 @@ type Config struct {
 	Debug   bool   `json:"debug"`
 	Address string `json:"address"`
 	Fee     int    `json:"fee"`
+	PublicKey string `json:"public_key"`
+	PrivateKey string `json:"private_key"`
 }
 
 // Load method loads configuration file to Config struct

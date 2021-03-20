@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/anonutopia/gowaves v1.0.1
+	github.com/wavesplatform/gowaves v0.8.8
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.3
 )
