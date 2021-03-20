@@ -3,21 +3,29 @@ package main
 import (
 	"log"
 
-	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/sqlite"
+	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func initDb() *gorm.DB {
-	db, err := gorm.Open("sqlite3", "kriptokuna.db")
+	dbconf := gorm.Config{}
 
-	if err != nil {
-		log.Printf("[initDb] error: %s", err)
+	if conf.Debug {
+		dbconf.Logger = logger.Default.LogMode(logger.Info)
+	} else {
+		dbconf.Logger = logger.Default.LogMode(logger.Error)
 	}
 
-	db.DB()
-	db.DB().Ping()
-	db.LogMode(conf.Debug)
-	db.AutoMigrate(&KeyValue{}, &Transaction{}, &User{})
+	db, err := gorm.Open(sqlite.Open("kriptokuna.db"), &dbconf)
+
+	if err != nil {
+		log.Println(err)
+	}
+
+	if err := db.AutoMigrate(&KeyValue{}, &Transaction{}); err != nil {
+		panic(err.Error())
+	}
 
 	return db
 }

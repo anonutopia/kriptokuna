@@ -6,26 +6,30 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"time"
 )
 
 type Prices struct {
-	WAVES float64 `json:"WAVES"`
-	BTC   float64 `json:"BTC"`
-	ETH   float64 `json:"ETH"`
-	USD   float64 `json:"USD"`
+	BTC float64 `json:"BTC"`
+	ETH float64 `json:"ETH"`
+	LTC float64 `json:"LTC"`
+	HRK float64 `json:"HRK"`
+	USD float64 `json:"USD"`
+	EUR float64 `json:"EUR"`
 }
 
 type PriceClient struct {
+	Prices *Prices
 }
 
-func (w *PriceClient) DoRequest() (*Prices, error) {
+func (pc *PriceClient) doRequest() (*Prices, error) {
 	p := &Prices{}
 	cl := http.Client{}
 
 	var req *http.Request
 	var err error
 
-	req, err = http.NewRequest(http.MethodGet, conf.PricesUrl, nil)
+	req, err = http.NewRequest(http.MethodGet, PricesURL, nil)
 
 	req.Header.Set("Content-Type", "application/json")
 
@@ -41,8 +45,7 @@ func (w *PriceClient) DoRequest() (*Prices, error) {
 			return nil, err
 		}
 		if res.StatusCode != 200 {
-			log.Printf("[PriceClient.DoRequest] Error, body: %s", string(body))
-			// logTelegram(fmt.Sprintf("[PriceClient.DoRequest] Error, body: %s", string(body)))
+			log.Println(string(body))
 			err := errors.New(res.Status)
 			return nil, err
 		}
@@ -54,7 +57,26 @@ func (w *PriceClient) DoRequest() (*Prices, error) {
 	return p, nil
 }
 
+func (pc *PriceClient) start() {
+	go func() {
+		for {
+			if p, err := pc.doRequest(); err != nil {
+				log.Println(err.Error())
+			} else {
+				pc.Prices = p
+			}
+
+			if conf.Debug {
+				log.Printf("%#v\n", pc.Prices)
+			}
+
+			time.Sleep(time.Minute * 15)
+		}
+	}()
+}
+
 func initPriceClient() *PriceClient {
 	pc := &PriceClient{}
+	pc.start()
 	return pc
 }
