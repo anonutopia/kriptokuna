@@ -12,6 +12,8 @@ import (
 )
 
 func sendAsset(amount uint64, assetId string, recipient string) error {
+	var assetBytes []byte
+
 	// Create sender's public key from BASE58 string
 	sender, err := crypto.NewPublicKeyFromBase58(conf.PublicKey)
 	if err != nil {
@@ -29,7 +31,13 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	// Current time in milliseconds
 	ts := time.Now().Unix() * 1000
 
-	asset, err := proto.NewOptionalAssetFromBytes(crypto.MustBytesFromBase58(assetId))
+	if len(assetId) > 0 {
+		assetBytes = crypto.MustBytesFromBase58(assetId)
+	} else {
+		assetBytes = []byte{}
+	}
+
+	asset, err := proto.NewOptionalAssetFromBytes(assetBytes)
 	if err != nil {
 		log.Println(err)
 		return err

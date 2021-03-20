@@ -21,4 +21,10 @@ const (
 
 	// AHRKId is AHRK asset id
 	AHRKId = "Gvs59WEEXVAQiRZwisUosG7fVNr8vnzS8mjkgqotrERT"
+
+	// WavesFee represents fee amount in Waves
+	WavesFee = 100000
+
+	// AHRKFee represents fee amount in AHRK
+	AHRKFee = 50000
 )

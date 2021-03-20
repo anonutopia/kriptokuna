@@ -59,16 +59,20 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 
 func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResponse)  {
 	// Take fee
-	amountWaves := talr.Amount - 100000
+	amountWaves := talr.Amount - WavesFee
 	if (amountWaves > 0) {
 		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.HRK * float64(AHRKDec))
 		sendAsset(amount, AHRKId, talr.Sender)
-		log.Println("done")
 	}
 }
 
 func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse)  {
-	log.Println(talr)
+	// Take fee
+	amountHRK := talr.Amount - AHRKFee
+	if (amountHRK > 0) {
+		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
+		sendAsset(amount, "", talr.Sender)
+	}
 }
 
 func initWavesMonitor() {
