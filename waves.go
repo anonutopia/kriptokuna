@@ -40,36 +40,39 @@ func (wm *WavesMonitor) checkTransaction(talr *gowaves.TransactionsAddressLimitR
 
 func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.TransactionsAddressLimitResponse) {
 	if talr.Type == 4 &&
-		talr.Timestamp >= wm.StartedTime &&
+		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
-		len(talr.AssetID) == 0 {
-			wm.purchaseAsset(talr)
+		len(talr.AssetID) == 0 &&
+		talr.Attachment == "exchange" {
+
+		wm.purchaseAsset(talr)
 	} else if talr.Type == 4 &&
-		talr.Timestamp >= wm.StartedTime &&
+		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		talr.AssetID == AHRKId {
-			wm.sellAsset(talr)
+
+		wm.sellAsset(talr)
 	}
 
 	tr.Processed = true
 	db.Save(tr)
 }
 
-func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResponse)  {
+func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResponse) {
 	// Take fee
 	amountWaves := talr.Amount - WavesFee
-	if (amountWaves > 0) {
+	if amountWaves > 0 {
 		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.HRK * float64(AHRKDec))
 		sendAsset(amount, AHRKId, talr.Sender)
 	}
 }
 
-func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse)  {
+func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse) {
 	// Take fee
 	amountHRK := talr.Amount - AHRKFee
-	if (amountHRK > 0) {
+	if amountHRK > 0 {
 		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
 		sendAsset(amount, "", talr.Sender)
 	}

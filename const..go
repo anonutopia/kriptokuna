@@ -27,4 +27,13 @@ const (
 
 	// AHRKFee represents fee amount in AHRK
 	AHRKFee = 50000
+
+	// TelPollerTimeout is Telegram poller timeout in seconds
+	TelPollerTimeout = 30
+
+	// TelAnonOps group for error logging
+	TelAnonOps = -1001213539865
+
+	// TelAnonTeam group for team messages
+	TelAnonTeam = -1001280228955
 )
