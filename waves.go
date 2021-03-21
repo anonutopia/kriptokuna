@@ -26,6 +26,8 @@ func (wm *WavesMonitor) start() {
 			}
 		}
 
+		wm.checkPayouts()
+
 		time.Sleep(time.Second * WavesMonitorTick)
 	}
 }
@@ -76,6 +78,78 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
 		sendAsset(amount, "", talr.Sender)
 	}
+}
+
+func (wm *WavesMonitor) checkPayouts() {
+	ks := &KeyValue{Key: "lastPayoutDay"}
+	db.FirstOrCreate(ks, ks)
+
+	if ks.ValueInt != uint64(time.Now().Day()) {
+		newValue := 0
+		ns, err := gowaves.WNC.NodeStatus()
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		t, err := total(ns.BlockchainHeight-1, "")
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		talr, err := gowaves.WNC.TransactionsAddressLimit(AHRKAddress, 100)
+		if err != nil {
+			log.Println(err)
+			return
+		}
+
+		for _, t := range talr[0] {
+			if t.Type == 11 {
+				newValue = t.Transfers[0].Amount
+				break
+			}
+		}
+
+		newValueHRK := int((float64(newValue) / (float64(pc.Prices.NGN / pc.Prices.HRK))))
+
+		if newValueHRK > 0 {
+			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
+			if err != nil {
+				log.Println(err)
+			}
+		}
+
+		ks.ValueInt = uint64(time.Now().Day())
+		db.Save(ks)
+	}
+}
+
+func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueHRK int) error {
+	abdr, err := gowaves.WNC.AssetsBalanceDistribution(AHRKId, height, 100, after)
+	if err != nil {
+		return err
+	}
+
+	for a, v := range abdr.Items {
+		if !exclude(conf.Exclude, a) {
+			ratio := float64(v) / float64(total)
+			amount := int(float64(newValueHRK) * ratio)
+
+			if amount > 0 {
+				u := &User{Address: a}
+				db.FirstOrCreate(u, u)
+				u.Accumulation += uint(amount)
+				db.Save(u)
+			}
+		}
+	}
+
+	if abdr.HasNext {
+		return wm.doPayouts(height, abdr.LastItem, total, newValueHRK)
+	}
+
+	return nil
 }
 
 func initWavesMonitor() {

@@ -12,10 +12,10 @@ import (
 type Prices struct {
 	BTC float64 `json:"BTC"`
 	ETH float64 `json:"ETH"`
-	LTC float64 `json:"LTC"`
 	HRK float64 `json:"HRK"`
 	USD float64 `json:"USD"`
 	EUR float64 `json:"EUR"`
+	NGN float64 `json:"NGN"`
 }
 
 type PriceClient struct {

@@ -16,3 +16,10 @@ type Transaction struct {
 	TxID      string `sql:"size:255"`
 	Processed bool   `sql:"DEFAULT:false"`
 }
+
+// User represents Telegram user
+type User struct {
+	gorm.Model
+	Address      string `sql:"size:255;unique_index"`
+	Accumulation uint
+}

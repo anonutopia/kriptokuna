@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/anonutopia/gowaves"
 	"github.com/wavesplatform/gowaves/pkg/client"
 	"github.com/wavesplatform/gowaves/pkg/crypto"
 	"github.com/wavesplatform/gowaves/pkg/proto"
@@ -76,4 +77,34 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	}
 
 	return nil
+}
+
+func exclude(slice []string, val string) bool {
+	for _, item := range slice {
+		if item == val {
+			return true
+		}
+	}
+	return false
+}
+
+func total(height int, after string) (int, error) {
+	t := 0
+
+	abdr, err := gowaves.WNC.AssetsBalanceDistribution(AHRKId, height, 100, after)
+	if err != nil {
+		return 0, err
+	}
+
+	for a, v := range abdr.Items {
+		if !exclude(conf.Exclude, a) {
+			t = t + v
+		}
+	}
+
+	if abdr.HasNext {
+		return total(height, abdr.LastItem)
+	}
+
+	return t, nil
 }

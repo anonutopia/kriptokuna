@@ -14,7 +14,7 @@ const (
 	WavesMonitorTick = 10
 
 	// PricesURL is URL for crypo prices
-	PricesURL = "https://min-api.cryptocompare.com/data/price?fsym=WAVES&tsyms=BTC,ETH,LTC,HRK,USD,EUR"
+	PricesURL = "https://min-api.cryptocompare.com/data/price?fsym=WAVES&tsyms=BTC,ETH,HRK,USD,EUR,NGN"
 
 	// AHRK Address
 	AHRKAddress = "3PPc3AP75DzoL8neS4e53tZ7ybUAVxk2jAb"
