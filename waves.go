@@ -56,6 +56,15 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 		talr.AssetID == AHRKId {
 
 		wm.sellAsset(talr)
+	} else if talr.Type == 4 &&
+		// talr.Timestamp >= wm.StartedTime &&
+		talr.Sender != AHRKAddress &&
+		talr.Recipient == AHRKAddress &&
+		talr.AssetID == AHRKId &&
+		talr.Attachment == "collect" &&
+		talr.Amount == 950000 {
+
+		wm.collectInterest(talr)
 	}
 
 	tr.Processed = true
@@ -77,6 +86,16 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 	if amountHRK > 0 {
 		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
 		sendAsset(amount, "", talr.Sender)
+	}
+}
+
+func (wm *WavesMonitor) collectInterest(talr *gowaves.TransactionsAddressLimitResponse) {
+	u := &User{Address: talr.Sender}
+	db.First(u, u)
+	if u.ID != 0 {
+		sendAsset(uint64(u.Accumulation), AHRKId, talr.Sender)
+		u.Accumulation = 0
+		db.Save(u)
 	}
 }
 

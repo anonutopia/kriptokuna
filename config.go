@@ -8,6 +8,7 @@ import (
 
 // Config struct holds all our configuration
 type Config struct {
+	Dev            bool     `json:"dev"`
 	Debug          bool     `json:"debug"`
 	Address        string   `json:"address"`
 	Fee            int      `json:"fee"`
@@ -15,6 +16,8 @@ type Config struct {
 	PrivateKey     string   `json:"private_key"`
 	TelegramAPIKey string   `json:"telegram_api_key"`
 	Exclude        []string `json:"exclude"`
+	Hostname       string   `json:"hostname"`
+	EmailAddress   string   `json:"email_address"`
 }
 
 // Load method loads configuration file to Config struct
