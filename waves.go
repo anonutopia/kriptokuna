@@ -46,7 +46,6 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 
 	if len(talr.Attachment) > 0 {
 		attachment = string(crypto.MustBytesFromBase58(talr.Attachment))
-		log.Println(attachment)
 	}
 
 	if talr.Type == 4 &&
