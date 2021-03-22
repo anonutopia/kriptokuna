@@ -5,6 +5,7 @@ go 1.16
 require (
 	github.com/anonutopia/gowaves v1.0.1
 	github.com/caddyserver/certmagic v0.12.0
+	github.com/itchyny/base58-go v0.1.0
 	github.com/wavesplatform/gowaves v0.8.8
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/tucnak/telebot.v2 v2.3.5

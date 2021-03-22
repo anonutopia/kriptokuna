@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/anonutopia/gowaves"
+	"github.com/wavesplatform/gowaves/pkg/crypto"
 )
 
 type WavesMonitor struct {
@@ -41,19 +42,24 @@ func (wm *WavesMonitor) checkTransaction(talr *gowaves.TransactionsAddressLimitR
 }
 
 func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.TransactionsAddressLimitResponse) {
-	if talr.Type == 4 &&
+	attachment := ""
+	if len(talr.Attachment) > 0 {
+		attachment = string(crypto.MustBytesFromBase58(talr.Attachment))
+		log.Println(attachment)
+	} else if talr.Type == 4 &&
 		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		len(talr.AssetID) == 0 &&
-		talr.Attachment == "exchange" {
+		attachment == "exchange" {
 
 		wm.purchaseAsset(talr)
 	} else if talr.Type == 4 &&
 		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
-		talr.AssetID == AHRKId {
+		talr.AssetID == AHRKId &&
+		len(attachment) == 0 {
 
 		wm.sellAsset(talr)
 	} else if talr.Type == 4 &&
@@ -61,7 +67,7 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		talr.AssetID == AHRKId &&
-		talr.Attachment == "collect" &&
+		attachment == "collect" &&
 		talr.Amount == 950000 {
 
 		wm.collectInterest(talr)

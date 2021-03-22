@@ -14,6 +14,6 @@ func accumulatedInterest(ctx *macaron.Context) string {
 	db.FirstOrCreate(u, u)
 
 	interest := float64(u.Accumulation) / float64(AHRKDec)
-	response := fmt.Sprintf("document.onload(document.getElementById('accumulatedInerest').innerHTML = '%.6f');", interest)
+	response := fmt.Sprintf("document.getElementById('accumulatedInerest').innerHTML = '%.6f';", interest)
 	return response
 }
