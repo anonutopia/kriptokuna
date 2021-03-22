@@ -43,10 +43,13 @@ func (wm *WavesMonitor) checkTransaction(talr *gowaves.TransactionsAddressLimitR
 
 func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.TransactionsAddressLimitResponse) {
 	attachment := ""
+
 	if len(talr.Attachment) > 0 {
 		attachment = string(crypto.MustBytesFromBase58(talr.Attachment))
 		log.Println(attachment)
-	} else if talr.Type == 4 &&
+	}
+
+	if talr.Type == 4 &&
 		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
