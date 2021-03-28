@@ -16,6 +16,7 @@ type Prices struct {
 	USD float64 `json:"USD"`
 	EUR float64 `json:"EUR"`
 	NGN float64 `json:"NGN"`
+	JPY float64 `json:"JPY"`
 }
 
 type PriceClient struct {

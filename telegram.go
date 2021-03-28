@@ -21,3 +21,15 @@ func initTelegramBot() *telebot.Bot {
 
 	return b
 }
+
+func logTelegram(message string) {
+	var group *telebot.Chat
+	if conf.Dev {
+		group = &telebot.Chat{ID: TelAnonOps}
+	} else {
+		group = &telebot.Chat{ID: TelAnonTeam}
+	}
+	if _, err := bot.Send(group, message); err != nil {
+		log.Println(err)
+	}
+}

@@ -17,7 +17,6 @@ type Config struct {
 	TelegramAPIKey string   `json:"telegram_api_key"`
 	Exclude        []string `json:"exclude"`
 	Hostname       string   `json:"hostname"`
-	EmailAddress   string   `json:"email_address"`
 }
 
 // Load method loads configuration file to Config struct

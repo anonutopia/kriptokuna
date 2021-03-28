@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"time"
 
@@ -85,6 +86,7 @@ func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResp
 	if amountWaves > 0 {
 		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.HRK * float64(AHRKDec))
 		sendAsset(amount, AHRKId, talr.Sender)
+		logTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)))
 	}
 }
 
@@ -94,6 +96,7 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 	if amountHRK > 0 {
 		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
 		sendAsset(amount, "", talr.Sender)
+		logTelegram(fmt.Sprintf("Promjena iz kriptokune: %.8f WAVES\nAdresa: %s", float64(amount)/float64(SatInBTC), talr.Sender))
 	}
 }
 
@@ -138,7 +141,7 @@ func (wm *WavesMonitor) checkPayouts() {
 			}
 		}
 
-		newValueHRK := int((float64(newValue) / (float64(pc.Prices.NGN / pc.Prices.HRK))))
+		newValueHRK := int((float64(newValue) / (float64(pc.Prices.JPY / pc.Prices.HRK))))
 
 		if newValueHRK > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)

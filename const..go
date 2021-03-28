@@ -14,7 +14,7 @@ const (
 	WavesMonitorTick = 10
 
 	// PricesURL is URL for crypo prices
-	PricesURL = "https://min-api.cryptocompare.com/data/price?fsym=WAVES&tsyms=BTC,ETH,HRK,USD,EUR,NGN"
+	PricesURL = "https://min-api.cryptocompare.com/data/price?fsym=WAVES&tsyms=BTC,ETH,HRK,USD,EUR,NGN,JPY"
 
 	// AHRK Address
 	AHRKAddress = "3PPc3AP75DzoL8neS4e53tZ7ybUAVxk2jAb"
@@ -36,4 +36,7 @@ const (
 
 	// TelAnonTeam group for team messages
 	TelAnonTeam = -1001280228955
+
+	// Port represents a port the app will listen on
+	Port = 5001
 )
