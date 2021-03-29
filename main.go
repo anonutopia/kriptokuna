@@ -35,7 +35,7 @@ func main() {
 
 	m.Get("/:address/interest.js", accumulatedInterest)
 
-	logTelegram("I've started.")
+	logTelegram("Kriptokuna daemon successfully started. 🚀")
 
 	initWavesMonitor()
 }
