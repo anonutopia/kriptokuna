@@ -171,6 +171,7 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 				db.FirstOrCreate(u, u)
 				u.Accumulation += uint(amount)
 				db.Save(u)
+				log.Printf("Added interest: %s - %.8f", u.Address, float64(amount)/float64(SatInBTC))
 			}
 		}
 	}
