@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -13,6 +15,10 @@ import (
 )
 
 func sendAsset(amount uint64, assetId string, recipient string) error {
+	if conf.Dev {
+		return errors.New(fmt.Sprintf("Not sending (dev): %d - %s - %s", amount, assetId, recipient))
+	}
+
 	var assetBytes []byte
 
 	// Create sender's public key from BASE58 string
