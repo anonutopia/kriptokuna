@@ -135,13 +135,16 @@ func (wm *WavesMonitor) checkPayouts() {
 		}
 
 		for _, t := range talr[0] {
-			if t.Type == 11 {
+			tm := time.Unix(t.Timestamp/1000, 0)
+			if t.Type == 11 && tm.Day() == time.Now().Day() {
 				newValue = t.Transfers[0].Amount
 				break
 			}
 		}
 
 		newValueHRK := int((float64(newValue) / (float64(pc.Prices.JPY / pc.Prices.HRK))))
+
+		log.Println(newValueHRK)
 
 		if newValueHRK > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
@@ -171,7 +174,7 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 				db.FirstOrCreate(u, u)
 				u.Accumulation += uint(amount)
 				db.Save(u)
-				log.Printf("Added interest: %s - %.8f", u.Address, float64(amount)/float64(SatInBTC))
+				log.Printf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec))
 			}
 		}
 	}
