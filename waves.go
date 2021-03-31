@@ -122,7 +122,7 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		t, err := total(ns.BlockchainHeight-1, "")
+		t, err := total(0, ns.BlockchainHeight-1, "")
 		if err != nil {
 			log.Println(err)
 			return

@@ -94,9 +94,7 @@ func exclude(slice []string, val string) bool {
 	return false
 }
 
-func total(height int, after string) (int, error) {
-	t := 0
-
+func total(t int, height int, after string) (int, error) {
 	abdr, err := gowaves.WNC.AssetsBalanceDistribution(AHRKId, height, 100, after)
 	if err != nil {
 		return 0, err
@@ -109,7 +107,7 @@ func total(height int, after string) (int, error) {
 	}
 
 	if abdr.HasNext {
-		return total(height, abdr.LastItem)
+		return total(t, height, abdr.LastItem)
 	}
 
 	return t, nil
