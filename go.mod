@@ -11,6 +11,7 @@ require (
 	golang.org/x/tools v0.0.0-20191216052735-49a3e744a425 // indirect
 	gopkg.in/macaron.v1 v1.4.0
 	gopkg.in/tucnak/telebot.v2 v2.3.5
+	gorm.io/driver/postgres v1.0.8
 	gorm.io/driver/sqlite v1.1.4
 	gorm.io/gorm v1.21.3
 )

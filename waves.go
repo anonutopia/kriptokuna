@@ -104,8 +104,8 @@ func (wm *WavesMonitor) collectInterest(talr *gowaves.TransactionsAddressLimitRe
 	u := &User{Address: talr.Sender}
 	db.First(u, u)
 	if u.ID != 0 {
-		sendAsset(uint64(u.Accumulation), AHRKId, talr.Sender)
-		u.Accumulation = 0
+		sendAsset(uint64(u.AmountAhrk), AHRKId, talr.Sender)
+		u.AmountAhrk = 0
 		db.Save(u)
 	}
 }
@@ -182,7 +182,7 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 			if amount > 0 {
 				u := &User{Address: a}
 				db.FirstOrCreate(u, u)
-				u.Accumulation += uint(amount)
+				u.AmountAhrk += uint(amount)
 				db.Save(u)
 				log.Printf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec))
 			}

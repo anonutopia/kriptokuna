@@ -16,7 +16,7 @@ import (
 )
 
 func sendAsset(amount uint64, assetId string, recipient string) error {
-	if conf.Dev {
+	if conf.Dev || conf.Debug {
 		return errors.New(fmt.Sprintf("Not sending (dev): %d - %s - %s", amount, assetId, recipient))
 	}
 

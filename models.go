@@ -20,6 +20,6 @@ type Transaction struct {
 // User represents Telegram user
 type User struct {
 	gorm.Model
-	Address      string `gorm:"size:255;uniqueIndex"`
-	Accumulation uint
+	Address    string `gorm:"size:255;uniqueIndex"`
+	AmountAhrk uint
 }
