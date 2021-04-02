@@ -144,17 +144,15 @@ func (wm *WavesMonitor) checkPayouts() {
 
 		newValueHRK := int((float64(newValue) / (float64(pc.Prices.JPY / pc.Prices.HRK))))
 
-		log.Println(newValueHRK)
-
 		if newValueHRK > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
 			if err != nil {
 				log.Println(err)
+			} else {
+				ks.ValueInt = uint64(time.Now().Day())
+				db.Save(ks)
 			}
 		}
-
-		ks.ValueInt = uint64(time.Now().Day())
-		db.Save(ks)
 	}
 }
 
