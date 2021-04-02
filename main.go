@@ -3,7 +3,6 @@ package main
 import (
 	"log"
 
-	macaron "gopkg.in/macaron.v1"
 	"gopkg.in/tucnak/telebot.v2"
 	"gorm.io/gorm"
 )
@@ -18,8 +17,6 @@ var wm *WavesMonitor
 
 var bot *telebot.Bot
 
-var m *macaron.Macaron
-
 func main() {
 	log.SetFlags(log.LstdFlags | log.Lshortfile)
 
@@ -30,10 +27,6 @@ func main() {
 	db = initDb()
 
 	pc = initPriceClient()
-
-	m = initMacaron()
-
-	m.Get("/:address/interest.js", accumulatedInterest)
 
 	logTelegram("Kriptokuna daemon successfully started. 🚀")
 

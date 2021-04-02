@@ -36,7 +36,4 @@ const (
 
 	// TelAnonTeam group for team messages
 	TelAnonTeam = -1001280228955
-
-	// Port represents a port the app will listen on
-	Port = 5001
 )
