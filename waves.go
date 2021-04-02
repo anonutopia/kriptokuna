@@ -143,6 +143,14 @@ func (wm *WavesMonitor) checkPayouts() {
 		}
 
 		newValueHRK := int((float64(newValue) / (float64(pc.Prices.JPY / pc.Prices.HRK))))
+		newValueRatio := float64(newValueHRK) / float64(t)
+		var extraValue int
+
+		if newValueRatio > getDailyRatio(1.1) {
+			extraValue := newValueHRK
+			newValueHRK = int(float64(newValueHRK) * getDailyRatio(1.1))
+			extraValue -= newValueHRK
+		}
 
 		if newValueHRK > 0 {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
@@ -152,6 +160,10 @@ func (wm *WavesMonitor) checkPayouts() {
 				ks.ValueInt = uint64(time.Now().Day())
 				db.Save(ks)
 			}
+		}
+
+		if extraValue > 0 {
+			log.Println("There's extra value.")
 		}
 	}
 }

@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"time"
 
@@ -111,4 +112,8 @@ func total(t int, height int, after string) (int, error) {
 	}
 
 	return t, nil
+}
+
+func getDailyRatio(annual float64) float64 {
+	return math.Pow(annual, (1/365.0)) - 1.0
 }
