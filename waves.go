@@ -50,7 +50,7 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 	}
 
 	if talr.Type == 4 &&
-		// talr.Timestamp >= wm.StartedTime &&
+		talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		len(talr.AssetID) == 0 &&
@@ -58,7 +58,7 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 
 		wm.purchaseAsset(talr)
 	} else if talr.Type == 4 &&
-		// talr.Timestamp >= wm.StartedTime &&
+		talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		talr.AssetID == AHRKId &&
@@ -66,7 +66,7 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 
 		wm.sellAsset(talr)
 	} else if talr.Type == 4 &&
-		// talr.Timestamp >= wm.StartedTime &&
+		talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		talr.AssetID == AHRKId &&
