@@ -50,11 +50,11 @@ func (wm *WavesMonitor) processTransaction(tr *Transaction, talr *gowaves.Transa
 	}
 
 	if talr.Type == 4 &&
-		talr.Timestamp >= wm.StartedTime &&
+		// talr.Timestamp >= wm.StartedTime &&
 		talr.Sender != AHRKAddress &&
 		talr.Recipient == AHRKAddress &&
 		len(talr.AssetID) == 0 &&
-		attachment == "exchange" {
+		len(attachment) == 0 {
 
 		wm.purchaseAsset(talr)
 	} else if talr.Type == 4 &&
@@ -84,7 +84,7 @@ func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResp
 	// Take fee
 	amountWaves := talr.Amount - WavesFee
 	if amountWaves > 0 {
-		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.HRK * float64(AHRKDec))
+		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.USD * HRKUSD * float64(AHRKDec))
 		sendAsset(amount, AHRKId, talr.Sender)
 		messageTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)), TelAnonTeam)
 	}
@@ -94,7 +94,7 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 	// Take fee
 	amountHRK := talr.Amount - AHRKFee
 	if amountHRK > 0 {
-		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.HRK * float64(SatInBTC))
+		amount := uint64((float64(amountHRK) / float64(AHRKDec)) / pc.Prices.USD * HRKUSD * float64(SatInBTC))
 		sendAsset(amount, "", talr.Sender)
 		messageTelegram(fmt.Sprintf("Promjena iz kriptokune: %.8f WAVES\nAdresa: %s", float64(amount)/float64(SatInBTC), talr.Sender), TelAnonTeam)
 	}
