@@ -26,6 +26,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	sender, err := crypto.NewPublicKeyFromBase58(conf.PublicKey)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
@@ -33,6 +34,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	sk, err := crypto.NewSecretKeyFromBase58(conf.PrivateKey)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
@@ -48,12 +50,14 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	asset, err := proto.NewOptionalAssetFromBytes(assetBytes)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
 	rec, err := proto.NewAddressFromString(recipient)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
@@ -62,6 +66,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	err = tr.Sign(proto.MainNetScheme, sk)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
@@ -69,6 +74,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	client, err := client.NewClient(client.Options{BaseUrl: WavesNodeURL, Client: &http.Client{}})
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 
@@ -80,6 +86,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 	_, err = client.Transactions.Broadcast(ctx, tr)
 	if err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 		return err
 	}
 

@@ -26,6 +26,7 @@ func logTelegram(message string) {
 	group := &telebot.Chat{ID: TelAnonOps}
 	if _, err := bot.Send(group, message); err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 	}
 }
 
@@ -38,5 +39,6 @@ func messageTelegram(message string, groupId int) {
 	}
 	if _, err := bot.Send(group, message); err != nil {
 		log.Println(err)
+		logTelegram(err.Error())
 	}
 }

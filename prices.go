@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -48,6 +49,7 @@ func (pc *PriceClient) doRequest() (*Prices, error) {
 		if res.StatusCode != 200 {
 			log.Println(string(body))
 			err := errors.New(res.Status)
+			logTelegram(err.Error())
 			return nil, err
 		}
 		json.Unmarshal(body, p)
@@ -63,12 +65,14 @@ func (pc *PriceClient) start() {
 		for {
 			if p, err := pc.doRequest(); err != nil {
 				log.Println(err.Error())
+				logTelegram(err.Error())
 			} else {
 				pc.Prices = p
 			}
 
 			if conf.Debug {
 				log.Printf("%#v\n", pc.Prices)
+				logTelegram(fmt.Sprintf("%#v\n", pc.Prices))
 			}
 
 			time.Sleep(time.Minute * 15)

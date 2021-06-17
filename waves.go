@@ -20,6 +20,7 @@ func (wm *WavesMonitor) start() {
 		pages, err := gowaves.WNC.TransactionsAddressLimit(conf.Address, 100)
 		if err != nil {
 			log.Println(err)
+			logTelegram(err.Error())
 		}
 
 		if len(pages) > 0 {
@@ -119,18 +120,21 @@ func (wm *WavesMonitor) checkPayouts() {
 		ns, err := gowaves.WNC.NodeStatus()
 		if err != nil {
 			log.Println(err)
+			logTelegram(err.Error())
 			return
 		}
 
 		t, err := total(0, ns.BlockchainHeight-1, "")
 		if err != nil {
 			log.Println(err)
+			logTelegram(err.Error())
 			return
 		}
 
 		talr, err := gowaves.WNC.TransactionsAddressLimit(AHRKAddress, 100)
 		if err != nil {
 			log.Println(err)
+			logTelegram(err.Error())
 			return
 		}
 
@@ -156,6 +160,7 @@ func (wm *WavesMonitor) checkPayouts() {
 			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
 			if err != nil {
 				log.Println(err)
+				logTelegram(err.Error())
 			} else {
 				ks.ValueInt = uint64(time.Now().Day())
 				db.Save(ks)
@@ -164,6 +169,7 @@ func (wm *WavesMonitor) checkPayouts() {
 
 		if extraValue > 0 {
 			log.Println("There's extra value.")
+			logTelegram("There's extra value.")
 		}
 	}
 }
@@ -185,6 +191,7 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 				u.AmountAhrk += uint(amount)
 				db.Save(u)
 				log.Printf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec))
+				logTelegram(fmt.Sprintf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec)))
 			}
 		}
 	}
