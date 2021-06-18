@@ -116,7 +116,6 @@ func (wm *WavesMonitor) checkPayouts() {
 	db.FirstOrCreate(ks, ks)
 
 	if ks.ValueInt != uint64(time.Now().Day()) {
-		newValue := 0
 		ns, err := gowaves.WNC.NodeStatus()
 		if err != nil {
 			log.Println(err)
@@ -131,50 +130,18 @@ func (wm *WavesMonitor) checkPayouts() {
 			return
 		}
 
-		talr, err := gowaves.WNC.TransactionsAddressLimit(AHRKAddress, 100)
+		err = wm.doPayouts(ns.BlockchainHeight-1, "", t)
 		if err != nil {
 			log.Println(err)
 			logTelegram(err.Error())
-			return
-		}
-
-		for _, t := range talr[0] {
-			tm := time.Unix(t.Timestamp/1000, 0)
-			if t.Type == 11 && tm.Day() == time.Now().Day() {
-				newValue = t.Transfers[0].Amount
-				break
-			}
-		}
-
-		newValueHRK := int((float64(newValue) / (float64(pc.Prices.JPY / pc.Prices.HRK))))
-		newValueRatio := float64(newValueHRK) / float64(t)
-		var extraValue int
-
-		if newValueRatio > getDailyRatio(1.1) {
-			extraValue := newValueHRK
-			newValueHRK = int(float64(newValueHRK) * getDailyRatio(1.1))
-			extraValue -= newValueHRK
-		}
-
-		if newValueHRK > 0 {
-			err = wm.doPayouts(ns.BlockchainHeight-1, "", t, newValueHRK)
-			if err != nil {
-				log.Println(err)
-				logTelegram(err.Error())
-			} else {
-				ks.ValueInt = uint64(time.Now().Day())
-				db.Save(ks)
-			}
-		}
-
-		if extraValue > 0 {
-			log.Println("There's extra value.")
-			logTelegram("There's extra value.")
+		} else {
+			ks.ValueInt = uint64(time.Now().Day())
+			db.Save(ks)
 		}
 	}
 }
 
-func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueHRK int) error {
+func (wm *WavesMonitor) doPayouts(height int, after string, total int) error {
 	abdr, err := gowaves.WNC.AssetsBalanceDistribution(AHRKId, height, 100, after)
 	if err != nil {
 		return err
@@ -182,8 +149,8 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 
 	for a, v := range abdr.Items {
 		if !exclude(conf.Exclude, a) {
-			ratio := float64(v) / float64(total)
-			amount := int(float64(newValueHRK) * ratio)
+			ratio := getDailyRatio(1.5)
+			amount := int(float64(v) * ratio)
 
 			if amount > 0 {
 				u := &User{Address: a}
@@ -191,13 +158,13 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int, newValueH
 				u.AmountAhrk += uint(amount)
 				db.Save(u)
 				log.Printf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec))
-				logTelegram(fmt.Sprintf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec)))
+				// logTelegram(fmt.Sprintf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec)))
 			}
 		}
 	}
 
 	if abdr.HasNext {
-		return wm.doPayouts(height, abdr.LastItem, total, newValueHRK)
+		return wm.doPayouts(height, abdr.LastItem, total)
 	}
 
 	return nil
