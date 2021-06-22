@@ -38,5 +38,5 @@ const (
 	TelAnonTeam = -1001280228955
 
 	// HTK to USD
-	HRKUSD = 6.184346
+	HRKUSD = 6.298943
 )
