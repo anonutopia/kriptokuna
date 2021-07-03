@@ -37,6 +37,6 @@ const (
 	// TelAnonTeam group for team messages
 	TelAnonTeam = -1001280228955
 
-	// HTK to USD
-	HRKUSD = 6.298943
+	// HRK to USD
+	HRKUSD = 6.330004
 )
