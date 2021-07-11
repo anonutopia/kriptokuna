@@ -22,4 +22,6 @@ type User struct {
 	gorm.Model
 	Address    string `gorm:"size:255;uniqueIndex"`
 	AmountAhrk uint
+	ReferralID uint
+	Referral   *User
 }

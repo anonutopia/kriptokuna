@@ -158,7 +158,15 @@ func (wm *WavesMonitor) doPayouts(height int, after string, total int) error {
 				u.AmountAhrk += uint(amount)
 				db.Save(u)
 				log.Printf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec))
-				// logTelegram(fmt.Sprintf("Added interest: %s - %.6f", u.Address, float64(amount)/float64(AHRKDec)))
+
+				r := &User{}
+				if u.ReferralID != 0 {
+					db.First(r, u.ReferralID)
+					ramount := int(float64(amount) * 0.2)
+					r.AmountAhrk += uint(ramount)
+					db.Save(r)
+					log.Printf("Added referral interest: %s - %.6f", r.Address, float64(ramount)/float64(AHRKDec))
+				}
 			}
 		}
 	}
