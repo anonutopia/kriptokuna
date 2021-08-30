@@ -40,14 +40,17 @@ type PricesHNB struct {
 
 func (p *PricesHNB) getUSD() float64 {
 	price := 0.0
+	var err error
 
-	priceStr := strings.Replace(p.Prices[0].SrednjiZaDevize, ",", ".", -1)
+	if len(p.Prices) > 0 {
+		priceStr := strings.Replace(p.Prices[0].SrednjiZaDevize, ",", ".", -1)
 
-	price, err := strconv.ParseFloat(priceStr, 64)
-	if err != nil {
-		log.Println(err.Error())
-		logTelegram(err.Error())
-		return 0.0
+		price, err = strconv.ParseFloat(priceStr, 64)
+		if err != nil {
+			log.Println(err.Error())
+			logTelegram(err.Error())
+			return 0.0
+		}
 	}
 
 	return price
