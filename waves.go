@@ -88,6 +88,7 @@ func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResp
 		amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.USD * pc.PricesHNB.getUSD() * float64(AHRKDec))
 		sendAsset(amount, AHRKId, talr.Sender)
 		messageTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)), TelAnonTeam)
+		messageTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)), TelKriptokuna)
 	}
 }
 

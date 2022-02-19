@@ -39,4 +39,7 @@ const (
 
 	// TelAnonTeam group for team messages
 	TelAnonTeam = -1001280228955
+
+	// TelKriptokuna group for Kriptokuna messages
+	TelKriptokuna = -1001456424919
 )

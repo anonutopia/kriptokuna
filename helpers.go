@@ -54,6 +54,14 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 		return err
 	}
 
+	assetBytesFee := []byte{}
+	assetFee, err := proto.NewOptionalAssetFromBytes(assetBytesFee)
+	if err != nil {
+		log.Println(err)
+		logTelegram(err.Error())
+		return err
+	}
+
 	rec, err := proto.NewAddressFromString(recipient)
 	if err != nil {
 		log.Println(err)
@@ -61,7 +69,7 @@ func sendAsset(amount uint64, assetId string, recipient string) error {
 		return err
 	}
 
-	tr := proto.NewUnsignedTransferWithSig(sender, *asset, *asset, uint64(ts), amount, 100000, proto.Recipient{Address: &rec}, nil)
+	tr := proto.NewUnsignedTransferWithSig(sender, *asset, *assetFee, uint64(ts), amount, 100000, proto.Recipient{Address: &rec}, nil)
 
 	err = tr.Sign(proto.MainNetScheme, sk)
 	if err != nil {
