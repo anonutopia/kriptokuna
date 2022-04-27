@@ -28,7 +28,7 @@ func main() {
 
 	pc = initPriceClient()
 
-	logTelegram("Kriptokuna daemon successfully started. 🚀")
+	logTelegram("Daemon successfully started. 🚀")
 
 	initWavesMonitor()
 }
