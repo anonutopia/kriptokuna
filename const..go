@@ -25,6 +25,12 @@ const (
 	// AHRKId is AHRK asset id
 	AHRKId = "Gvs59WEEXVAQiRZwisUosG7fVNr8vnzS8mjkgqotrERT"
 
+	// AEUR Address
+	AEURAddress = "3PAAbqdCtmCJjoNWTgBribig57gvR4LDLsX"
+
+	// AEURId is AEUR asset id
+	AEURId = "EDjBRRiHoAdX1RG7sgYtv5BrPT8z19QVNDn8WfL9z2ve"
+
 	// WavesFee represents fee amount in Waves
 	WavesFee = 100000
 

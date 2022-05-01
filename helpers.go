@@ -110,8 +110,17 @@ func exclude(slice []string, val string) bool {
 	return false
 }
 
+func tokenID() string {
+	if conf.Address == AHRKAddress {
+		return AHRKId
+	} else if conf.Address == AEURAddress {
+		return AEURId
+	}
+	return ""
+}
+
 func total(t int, height int, after string) (int, error) {
-	abdr, err := gowaves.WNC.AssetsBalanceDistribution(AHRKId, height, 100, after)
+	abdr, err := gowaves.WNC.AssetsBalanceDistribution(tokenID(), height, 100, after)
 	if err != nil {
 		return 0, err
 	}
@@ -129,6 +138,12 @@ func total(t int, height int, after string) (int, error) {
 	return t, nil
 }
 
-func getDailyRatio(annual float64) float64 {
+func getDailyRatio() float64 {
+	annual := 1.5
+
+	if conf.Address == AEURAddress {
+		annual = 1.25
+	}
+
 	return math.Pow(annual, (1/365.0)) - 1.0
 }

@@ -23,6 +23,8 @@ type User struct {
 	Address        string `gorm:"size:255;uniqueIndex"`
 	AmountAhrk     uint
 	AmountAhrkAint uint
+	AmountAeur     uint
+	AmountAeurAint uint
 	AmountWaves    uint
 	ReferralID     uint
 	Referral       *User
