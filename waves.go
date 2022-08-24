@@ -86,7 +86,7 @@ func (wm *WavesMonitor) purchaseAsset(talr *gowaves.TransactionsAddressLimitResp
 	amountWaves := talr.Amount - WavesFee
 	if amountWaves > 0 {
 		if conf.Address == AHRKAddress {
-			amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.USD * pc.PricesHNB.getUSD() * float64(AHRKDec))
+			amount := uint64((float64(amountWaves) / float64(SatInBTC)) * pc.Prices.EUR * 7.5 * float64(AHRKDec))
 			sendAsset(amount, tokenID(), talr.Sender)
 			messageTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)), TelAnonTeam)
 			messageTelegram(fmt.Sprintf("Promjena u kriptokunu: %.6f AHRK", float64(amount)/float64(AHRKDec)), TelKriptokuna)
@@ -104,7 +104,7 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 	amountHRK := talr.Amount - AHRKFee
 	if amountHRK > 0 {
 		if conf.Address == AHRKAddress {
-			amount := uint64((float64(amountHRK) / float64(AHRKDec)) / (pc.Prices.USD * pc.PricesHNB.getUSD()) * float64(SatInBTC))
+			amount := uint64((float64(amountHRK) / float64(AHRKDec)) / (pc.Prices.EUR * 7.5 * float64(SatInBTC)))
 			sendAsset(amount, "", talr.Sender)
 			messageTelegram(fmt.Sprintf("Promjena iz kriptokune: %.8f WAVES\nAdresa: %s", float64(amount)/float64(SatInBTC), talr.Sender), TelAnonTeam)
 		} else if conf.Address == AEURAddress {
