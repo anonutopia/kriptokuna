@@ -107,6 +107,7 @@ func (wm *WavesMonitor) sellAsset(talr *gowaves.TransactionsAddressLimitResponse
 			amount := uint64((float64(amountHRK) / float64(AHRKDec)) / (pc.Prices.EUR * 7.5 * float64(SatInBTC)))
 			sendAsset(amount, "", talr.Sender)
 			messageTelegram(fmt.Sprintf("Promjena iz kriptokune: %.8f WAVES\nAdresa: %s", float64(amount)/float64(SatInBTC), talr.Sender), TelAnonTeam)
+			messageTelegram(fmt.Sprintf("Promjena iz kriptokune: %.8f WAVES\nAdresa: %s", float64(amount)/float64(SatInBTC), talr.Sender), TelAnonOps)
 		} else if conf.Address == AEURAddress {
 			amount := uint64((float64(amountHRK) / float64(AHRKDec)) / (pc.Prices.USD) * float64(SatInBTC))
 			sendAsset(amount, "", talr.Sender)
