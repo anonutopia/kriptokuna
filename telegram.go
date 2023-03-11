@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"log"
+	"net/url"
+	"path"
+	"runtime"
 	"time"
 
 	"gopkg.in/tucnak/telebot.v2"
@@ -22,7 +26,22 @@ func initTelegramBot() *telebot.Bot {
 	return b
 }
 
+func getCallerInfo() (info string) {
+
+	// pc, file, lineNo, ok := runtime.Caller(2)
+	_, file, lineNo, ok := runtime.Caller(2)
+	if !ok {
+		info = "runtime.Caller() failed"
+		return
+	}
+	// funcName := runtime.FuncForPC(pc).Name()
+	fileName := path.Base(file) // The Base function returns the last element of the path
+	return fmt.Sprintf("%s:%d: ", fileName, lineNo)
+}
+
 func logTelegram(message string) {
+	message = "anote-mobile:" + getCallerInfo() + url.PathEscape(url.QueryEscape(message))
+
 	group := &telebot.Chat{ID: TelAnonOps}
 	if _, err := bot.Send(group, message); err != nil {
 		log.Println(err)
