@@ -8,7 +8,7 @@ const (
 	AHRKDec = uint64(1000000)
 
 	// WavesNodeURL is an URL for Waves Node
-	WavesNodeURL = "https://nodes.wavesnodes.com"
+	WavesNodeURL = "https://nodes.wavesplatform.com"
 
 	// WavesMonitorTick interval in seconds
 	WavesMonitorTick = 10
