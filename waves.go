@@ -30,7 +30,7 @@ func (wm *WavesMonitor) start() {
 			}
 		}
 
-		wm.checkPayouts()
+		// wm.checkPayouts()
 
 		time.Sleep(time.Second * WavesMonitorTick)
 	}
